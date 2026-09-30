@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Atharva Barad portfolio — product, operations, analytics, finance, and systems work.">
-<meta name="author" content="Atharva Barad"><title>Capital Budgeting — Atharva Barad</title>
+<meta name="description" content="A 10-year capital-budgeting model for a five-warehouse Costco expansion, including incremental cash flow, scenario analysis, sensitivity, WACC, and financing capacity.">
+<meta name="author" content="Atharva Barad"><title>Capital Budgeting for a Five-Warehouse Expansion — Atharva Barad</title>
 <link rel="stylesheet" href="../assets/style.css">
 </head><body>
 <header class="site-header"><div class="shell nav">
 <a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
 </div></header>
 
-<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../projects.html">Projects</a> / Capital Budgeting</div>
-<div class="eyebrow">Academic team · Summer 2026 · Primary analytical lead</div><h1>Five-Warehouse Capital <span class="accent">Budgeting.</span></h1><p class="lead">A 10-year incremental cash-flow model that moved from headline NPV/IRR into operating assumptions, sensitivity drivers, and financing capacity.</p></div></section>
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../projects.html">Projects</a> / Corporate finance</div>
+<div class="eyebrow">B BUS 451 · Summer 2026 · Primary analytical lead</div><h1>Capital Budgeting for a <span class="accent">Five-Warehouse Expansion.</span></h1><p class="lead">A 10-year incremental cash-flow model that tested whether the project still created value after operating assumptions, downside scenarios, sensitivity, and financing capacity were made explicit.</p></div></section>
 <section class="section"><div class="shell"><div class="case-layout"><div class="prose">
 <h2>My role</h2><p>I served as the primary analytical lead, completing most of the underlying research and financial modeling while teammates reviewed and double-checked outputs.</p>
-<h2>Cash-flow model</h2><p>The final model separated merchandise and membership revenue, used a 60%/85%/100% sales ramp, modeled cannibalization on lost contribution margin, and included operating costs, CapEx/depreciation, maintenance CapEx, operating NWC recovery, and after-tax salvage.</p>
-<h2>Base case</h2><div class="callout"><strong>$128.91M initial investment · $140.96M base NPV · 25.58% IRR · 8.18% WACC.</strong></div>
+<h2>How the project economics were built</h2><p>The final model separated merchandise and membership revenue, used a 60%/85%/100% sales ramp, modeled cannibalization on lost contribution margin, and included operating costs, CapEx/depreciation, maintenance CapEx, operating NWC recovery, and after-tax salvage.</p>
+<table class="result-table"><thead><tr><th>Driver</th><th>Final treatment</th></tr></thead><tbody><tr><td>Revenue</td><td>Mature merchandise sales modeled separately from membership revenue; warehouse ramp applied over Years 1–3.</td></tr><tr><td>Cannibalization</td><td>Applied to lost contribution margin rather than gross sales.</td></tr><tr><td>Reinvestment</td><td>Initial CapEx, maintenance CapEx, straight-line depreciation, NWC build/recovery, and after-tax salvage.</td></tr><tr><td>Discount rate</td><td>8.18% WACC using a forward-looking 21% statutory tax rate for the debt tax shield.</td></tr></tbody></table>
+<h2>The base case created value—but the downside was thin</h2><div class="callout"><strong>$128.91M initial investment · $140.96M base NPV · 25.58% IRR · 8.18% WACC.</strong></div>
 <p>Pessimistic/base/optimistic NPVs were approximately $3.99M / $140.96M / $326.13M.</p>
 <figure class="evidence-figure">
 <svg viewBox="0 0 900 410" role="img" aria-label="Final Costco five-warehouse scenario NPV comparison">
@@ -30,13 +31,14 @@
   <rect class="cb" x="390" y="217" width="120" height="113" rx="5"/><text class="cv" x="450" y="205" text-anchor="middle">$140.96M</text><text class="ct" x="450" y="360" text-anchor="middle">Base</text><text class="ct" x="450" y="380" text-anchor="middle">25.58% IRR</text>
   <rect class="cb" x="590" y="69" width="120" height="261" rx="5"/><text class="cv" x="650" y="57" text-anchor="middle">$326.13M</text><text class="ct" x="650" y="360" text-anchor="middle">Optimistic</text><text class="ct" x="650" y="380" text-anchor="middle">54.26% IRR</text>
 </svg>
-<figcaption>Portfolio reconstruction from the authoritative August 19 final executive memo/model. Earlier August 5 checkpoint values are intentionally excluded.</figcaption>
+<figcaption><span class="caption-title">Scenario NPV from the final model.</span> The base and upside cases create substantial value; the pessimistic case remains positive, but only narrowly.<span class="source-note">Values from the authoritative August 19 final executive memo and Excel model.</span></figcaption>
 </figure>
-<h2>Sensitivity analysis</h2><p>The most useful part of the project was identifying what actually drove the result. Mature warehouse revenue was the largest one-way NPV driver, followed by variable warehouse operating cost and the initial CapEx multiplier. Tested two-way combinations remained positive.</p>
-<div class="reasoning-block"><h3>What moved the decision most?</h3><p>The final memo’s one-way sensitivity put mature warehouse revenue first: moving mature sales from 80% to 120% of base shifted NPV from roughly <strong>$94.27M to $187.66M</strong>. That made site selection and demand validation more important than treating the base NPV as a fixed answer.</p></div>
-<h2>Financing recommendation</h2><p>I supported a 100% internal-financing recommendation by comparing the modeled project with Costco’s FY2025 liquidity and cash generation: $15.284B cash + short-term investments, $13.335B operating cash flow, and about $7.837B simple free cash flow after CapEx.</p>
+<h2>Sensitivity turned the model into a control map</h2><p>The most useful part of the project was identifying what actually drove the result. Mature warehouse revenue was the largest one-way NPV driver, followed by variable warehouse operating cost and the initial CapEx multiplier. Tested two-way combinations remained positive.</p>
+<div class="reasoning-block"><h3>Mature sales mattered more than the headline NPV</h3><p>The final memo’s one-way sensitivity put mature warehouse revenue first: moving mature sales from 80% to 120% of base shifted NPV from roughly <strong>$94.27M to $187.66M</strong>. That reframed the recommendation: site selection, demand validation, and ramp execution were the operating controls that mattered most.</p></div>
+<h2>Financing: avoid solving a liquidity problem that did not exist</h2><p>I supported a 100% internal-financing recommendation by comparing the modeled project with Costco’s FY2025 liquidity and cash generation: $15.284B cash + short-term investments, $13.335B operating cash flow, and about $7.837B simple free cash flow after CapEx.</p>
 <p>The $128.91M project represented about 0.84% of cash/ST investments and 1.64% of annual simple FCF in that academic analysis.</p>
-<h2>Model corrections</h2><p>Before the authoritative final version, I documented and corrected membership-revenue overlap and tax-rate treatment. That mattered because the quality of a capital-budgeting answer depends as much on model hygiene as on the final NPV.</p>
+<h2>Model corrections mattered as much as model outputs</h2><p>Before the authoritative final version, I documented and corrected membership-revenue overlap and tax-rate treatment. Those changes were not cosmetic: double-counting revenue or using the wrong tax treatment can create a clean-looking NPV that answers the wrong question.</p>
+<div class="artifact-bar"><a class="artifact-link" href="../articles/capital-budgeting-under-downside.html">Downside analysis <span class="meta">article</span></a></div>
 </div><aside class="sidebar"><h4>Outputs</h4><div class="side-list">
 <div class="side-item"><strong>$140.96M</strong><span>base NPV</span></div><div class="side-item"><strong>25.58%</strong><span>IRR</span></div><div class="side-item"><strong>8.18%</strong><span>WACC</span></div><div class="side-item"><strong>100%</strong><span>internal financing recommendation</span></div>
 </div></aside></div></div></section></main>
