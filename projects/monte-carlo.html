@@ -15,13 +15,62 @@
 <div class="notice">Academic research/modeling. The outputs are simulated decision support, not realized investment results or professional quant tenure.</div>
 <h2>Why the project became more than “run Monte Carlo”</h2><p>The easy version would have sampled independent variables from convenient distributions. The final project instead had to answer a harder question: how do you construct a coherent joint country-state system when factor distributions differ by income group, relationships are dependent, and the assembled correlation structure is not automatically valid?</p>
 <h2>Model architecture</h2><ul><li>15-year horizon, six-warehouse expansion framework</li><li>Four World Bank income groups × three rollout policies = 12 scenarios</li><li>10,000 Monte Carlo paths per scenario</li><li>21 country-screening factors + two FX states</li><li>Separate 21×21 AHP governance matrix and 23×23 stochastic dependence matrix</li></ul>
+<h2>A decision framework, not just a simulation</h2><p>The most distinctive part of the project was the integration. Country screening, AHP governance, empirical distributions, financial transmission, rollout strategy, financing constraints, and valuation all had to work as one system. A country factor only mattered financially through a defined economic channel; the AHP weights never became NPV coefficients just because they were numeric.</p>
+
+<figure class="evidence-figure">
+<svg viewBox="0 0 980 430" role="img" aria-label="Recreated web version of the Monte Carlo architecture with financing feedback">
+  <defs><style>.bx{fill:#fffdf8;stroke:#171817;stroke-width:2}.tx{font:15px Inter,Arial,sans-serif;fill:#171817}.sm{font:12px Inter,Arial,sans-serif;fill:#61635f}.ar{stroke:#171817;stroke-width:2;fill:none;marker-end:url(#m)}</style><marker id="m" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#171817"/></marker></defs>
+  <rect class="bx" x="20" y="35" width="150" height="70" rx="12"/><text class="tx" x="95" y="64" text-anchor="middle"><tspan x="95">Source data &amp;</tspan><tspan x="95" dy="20">company calibration</tspan></text>
+  <rect class="bx" x="205" y="35" width="150" height="70" rx="12"/><text class="tx" x="280" y="64" text-anchor="middle"><tspan x="280">Selected Global Z</tspan><tspan x="280" dy="20">&amp; empirical marginals</tspan></text>
+  <rect class="bx" x="390" y="35" width="150" height="70" rx="12"/><text class="tx" x="465" y="64" text-anchor="middle"><tspan x="465">23-variable</tspan><tspan x="465" dy="20">dependence</tspan></text>
+  <rect class="bx" x="575" y="35" width="150" height="70" rx="12"/><text class="tx" x="650" y="64" text-anchor="middle"><tspan x="650">Temporal</tspan><tspan x="650" dy="20">country state</tspan></text>
+  <rect class="bx" x="760" y="35" width="190" height="70" rx="12"/><text class="tx" x="855" y="64" text-anchor="middle"><tspan x="855">Financial</tspan><tspan x="855" dy="20">transmission</tspan></text>
+  <path class="ar" d="M170 70H205"/><path class="ar" d="M355 70H390"/><path class="ar" d="M540 70H575"/><path class="ar" d="M725 70H760"/>
+  <rect class="bx" x="760" y="175" width="190" height="70" rx="12"/><text class="tx" x="855" y="204" text-anchor="middle"><tspan x="855">Warehouse-year</tspan><tspan x="855" dy="20">operations</tspan></text>
+  <rect class="bx" x="545" y="175" width="150" height="70" rx="12"/><text class="tx" x="620" y="216" text-anchor="middle">FCFF</text>
+  <rect class="bx" x="335" y="175" width="170" height="70" rx="12"/><text class="tx" x="420" y="204" text-anchor="middle"><tspan x="420">Dynamic WACC &amp;</tspan><tspan x="420" dy="20">terminal value</tspan></text>
+  <rect class="bx" x="80" y="175" width="210" height="70" rx="12"/><text class="tx" x="185" y="202" text-anchor="middle"><tspan x="185">NPV / IRR / MOIC /</tspan><tspan x="185" dy="20">payback / success</tspan></text>
+  <path class="ar" d="M855 105V175"/><path class="ar" d="M760 210H695"/><path class="ar" d="M545 210H505"/><path class="ar" d="M335 210H290"/>
+  <rect class="bx" x="555" y="325" width="300" height="70" rx="12"/><text class="tx" x="705" y="354" text-anchor="middle"><tspan x="705">Funding policy</tspan><tspan x="705" dy="20">Aggressive / Moderate / Organic</tspan></text>
+  <path class="ar" d="M620 245V325"/><path class="ar" d="M805 325V245"/><text class="sm" x="635" y="286">FCFF + investment requirement</text><text class="sm" x="790" y="286">Proceed / defer openings</text>
+</svg>
+<figcaption>Recreated for web legibility from Figure 2 of the final paper: company and country evidence flow into financial transmission, while financing can change the realized warehouse schedule and feed back into operations.</figcaption>
+</figure>
+
 <h2>Marginal calibration</h2><p>I calibrated income-group-specific empirical marginals using adaptive/asymmetric kernel estimation where appropriate, cross-validated partial pooling, soft tail saturation, 6,000-point numerical grids, and 100,000 diagnostic draws per factor/group.</p>
 <h2>Dependence modeling</h2><p>I estimated pairwise Spearman dependence, converted it through the standard Gaussian-copula relationship, and then dealt with a critical numerical issue: the assembled dependence matrix was not positive semidefinite.</p>
 <p>I repaired that matrix using Higham’s nearest-correlation procedure and validated the transformed joint system with 50,000 draws per income group after inverse-CDF transformation.</p>
 <h2>True-Zero bridge</h2><p>A separate modeling issue was that Costco-derived operating relationships already embedded a U.S. country state. I built a bi-directionally validated True-Zero bridge to remove that embedded state before applying destination-country conditions through explicit revenue, cost, working-capital, timing, FX, and WACC channels.</p>
 <h2>Financing continuation</h2><p>The staged/moderate policy does not assume every warehouse opens on schedule. Openings can defer if cash plus incremental borrowing headroom is insufficient, with researcher-defined continuation checks around leverage, interest coverage, and maintenance cash flow/debt.</p>
+<h2>Model governance: investigate the suspicious result</h2><p>Several of the strongest lessons came from moments when the model or documentation looked suspicious. I learned not to defend the first version just because it ran. I traced source lineage, separated empirical inputs from structural priors, tested calibration and financing invariants, and reconciled the executable model against the written report.</p>
+<p>That distinction mattered during the warehouse-age ramp review: investigation showed that the executive model was correct and the documentation was wrong. In other cases, such as inflation/network-support behavior, the economic mechanics themselves needed revision. Being able to tell a documentation error from a model error became part of the analytical work.</p>
+
+<h2>Refusing false precision</h2><p>Some uncertainty could be estimated; some could not. Ten annual company observations were not enough to justify fitting a six-dimensional company copula, so I did not pretend they were. The model used a simpler central treatment plus a robustness comparison instead. More generally, I tried to make priors visible and stress-test them rather than disguise them as estimated facts.</p>
+
 <h2>Validation</h2><div class="callout"><strong>Archived validation suite:</strong> 75/75 core checks, 22/22 inflation/FX checks, 60/60 financing-continuation invariants, and 12/12 scenario reproduction.</div>
+
+<figure class="evidence-figure">
+<svg viewBox="0 0 980 420" role="img" aria-label="Strict full-project success frequency across income groups and strategies">
+  <style>.lab{font:14px Inter,Arial,sans-serif;fill:#373936}.ttl{font:700 18px Inter,Arial,sans-serif;fill:#171817}.gridl{stroke:#d8d3c9;stroke-width:1}.a{fill:#173b35}.b{fill:#bd4a1c}.c{fill:#8c8f89}</style>
+  <text class="ttl" x="20" y="28">Strict full-project success frequency</text>
+  <text class="lab" x="20" y="51">6/6 rollout + positive NPV + IRR above path-equivalent Effective WACC</text>
+  <line class="gridl" x1="90" y1="330" x2="940" y2="330"/><line class="gridl" x1="90" y1="250" x2="940" y2="250"/><line class="gridl" x1="90" y1="170" x2="940" y2="170"/><line class="gridl" x1="90" y1="90" x2="940" y2="90"/>
+  <text class="lab" x="48" y="335">0%</text><text class="lab" x="40" y="255">25%</text><text class="lab" x="40" y="175">50%</text><text class="lab" x="40" y="95">75%</text>
+  <!-- Low -->
+  <rect class="a" x="135" y="326" width="28" height="4"/><rect class="b" x="167" y="325" width="28" height="5"/><rect class="c" x="199" y="330" width="28" height="0.3"/>
+  <!-- Lower middle -->
+  <rect class="a" x="340" y="276" width="28" height="54"/><rect class="b" x="372" y="273" width="28" height="57"/><rect class="c" x="404" y="320" width="28" height="10"/>
+  <!-- Upper middle -->
+  <rect class="a" x="545" y="211" width="28" height="119"/><rect class="b" x="577" y="206" width="28" height="124"/><rect class="c" x="609" y="301" width="28" height="29"/>
+  <!-- High -->
+  <rect class="a" x="750" y="108" width="28" height="222"/><rect class="b" x="782" y="104" width="28" height="226"/><rect class="c" x="814" y="266" width="28" height="64"/>
+  <text class="lab" x="150" y="355" text-anchor="middle">Low</text><text class="lab" x="385" y="355" text-anchor="middle">Lower-middle</text><text class="lab" x="590" y="355" text-anchor="middle">Upper-middle</text><text class="lab" x="795" y="355" text-anchor="middle">High</text>
+  <rect class="a" x="650" y="382" width="14" height="14"/><text class="lab" x="671" y="394">Aggressive</text><rect class="b" x="755" y="382" width="14" height="14"/><text class="lab" x="776" y="394">Moderate</text><rect class="c" x="850" y="382" width="14" height="14"/><text class="lab" x="871" y="394">Organic</text>
+</svg>
+<figcaption>Recreated from Figure 7. Strict success rises sharply with development level; Moderate is slightly above Aggressive in every income group, while Organic preserves external capital at the cost of completing the intended network less often.</figcaption>
+</figure>
 <h2>What I learned</h2><p>The biggest lesson was that a sophisticated model is mostly an exercise in defining and validating assumptions. The simulation engine was not the hard part; building a defensible joint state, enforcing coherent financing behavior, and proving the implementation reproduced its own rules was.</p>
+<div class="reasoning-block"><h3>The interview version</h3><p>If I had to compress the project into three stories, they would be: <strong>judgment over coding</strong> (validate and revise suspicious outputs), <strong>decision-making without false precision</strong> (use evidence where it exists and visible priors where it does not), and <strong>strategy–finance interaction</strong> (financing capacity can change whether a warehouse opens, so the strategy changes the realized business rather than just the calendar).</p></div>
 </div><aside class="sidebar"><h4>Scale</h4><div class="side-list">
 <div class="side-item"><strong>12</strong><span>scenarios</span></div><div class="side-item"><strong>10,000</strong><span>paths / scenario</span></div><div class="side-item"><strong>23×23</strong><span>dependence matrix</span></div><div class="side-item"><strong>50,000</strong><span>joint validation draws / income group</span></div><div class="side-item"><strong>169</strong><span>core + inflation/FX + financing validation checks</span></div>
 </div></aside></div></div></section></main>
