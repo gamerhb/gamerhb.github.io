@@ -1,0 +1,42 @@
+name: Import original Monte Carlo PDF
+
+on:
+  push:
+    branches:
+      - "portfolio/original-monte-carlo-pdf"
+    paths:
+      - ".github/workflows/import-original-monte-carlo.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  import-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: "portfolio/original-monte-carlo-pdf"
+          fetch-depth: 0
+
+      - name: Download exact original PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 'https://sdmntprwestus3.oaiusercontent.com/files/00000000-bb60-81fd-9ed5-c1fa7292b718/raw?se=2026-09-30T23%3A28%3A54Z&sp=r&sv=2026-02-06&sr=b&scid=f31c95c5-cd5f-58c7-ba66-cfe10b4ef42e&skoid=5e713cdb-766b-475e-a3ca-8adb6cf99aa0&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-30T21%3A28%3A22Z&ske=2026-10-01T21%3A28%3A22Z&sks=b&skv=2026-02-06&sig=8R6382msZWyywj7Zd18n7UB1v4E4nR0gPYZBckM3Cy8%3D' -o assets/Atharva_Barad_BBUS499_Monte_Carlo_Research_Paper.pdf
+          test "$(stat -c%s assets/Atharva_Barad_BBUS499_Monte_Carlo_Research_Paper.pdf)" = "3965142"
+          echo "7a9ff1bad9a44e5ed6de032ce94286510f57d0133758fe36834960c375365c1e  assets/Atharva_Barad_BBUS499_Monte_Carlo_Research_Paper.pdf" | sha256sum -c -
+
+      - name: Commit original PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/Atharva_Barad_BBUS499_Monte_Carlo_Research_Paper.pdf
+          if git diff --cached --quiet; then
+            echo "No PDF change to commit."
+            exit 0
+          fi
+          git commit -m "Replace compressed research paper with original PDF"
+          git push origin HEAD:portfolio/original-monte-carlo-pdf
