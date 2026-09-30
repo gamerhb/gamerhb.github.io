@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Atharva Barad portfolio — product, operations, analytics, finance, and systems work.">
+<meta name="author" content="Atharva Barad"><title>Why dependence modeling became the hardest part of my Monte Carlo project — Atharva Barad</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head><body>
+<header class="site-header"><div class="shell nav">
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+</div></header>
+
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / Why dependence modeling became the hardest part of my Monte Carlo project</div>
+<div class="eyebrow">Quantitative modeling · 9 min read</div><h1>Why dependence modeling became the hardest part of my Monte Carlo project</h1></div></section>
+<section class="section"><div class="shell"><div class="case-layout"><article class="prose">
+<p>Monte Carlo simulation sounds like a problem about random numbers. In my international-expansion research, the random-number generation became one of the easier parts.</p>
+<h2>Independent draws would have been wrong</h2><p>Country variables such as macroeconomic, institutional, cost, and market conditions are not independent. Sampling each factor separately would create combinations that look statistically convenient but economically incoherent.</p>
+<h2>Marginals first</h2><p>I calibrated income-group-specific empirical marginals using adaptive/asymmetric kernel estimation where appropriate, partial pooling, numerical grids, and large diagnostic draw sets. That gave each factor a distribution that could reflect its own shape rather than forcing everything into a normal distribution.</p>
+<h2>Then the joint structure</h2><p>I estimated pairwise Spearman dependence and converted it through a Gaussian-copula relationship. But an assembled pairwise dependence matrix is not guaranteed to be positive semidefinite—the numerical property required to use it as a valid correlation structure.</p>
+<h2>Higham repair</h2><p>I used Higham’s nearest-correlation procedure to repair the matrix, then validated the joint system with 50,000 draws per income group after inverse-CDF transformation.</p>
+<div class="callout"><strong>The lesson:</strong> “correlated inputs” is not one checkbox. It is a chain of assumptions that has to remain mathematically valid after calibration, assembly, transformation, and simulation.</div>
+<h2>Validation changed how I thought about the model</h2><p>The final archived suite included core checks, inflation/FX checks, financing-continuation invariants, and scenario reproduction. The model became more trustworthy not because it was more complicated, but because it could explain and reproduce its own behavior.</p>
+</article>
+<aside class="sidebar"><h4>Related work</h4><div class="side-list">
+<div class="side-item"><a href="../projects/system.html">System</a><span>Personal product & AI workflow</span></div>
+<div class="side-item"><a href="../experience/united-indians.html">United Indians</a><span>Professional operations</span></div>
+<div class="side-item"><a href="../projects/monte-carlo.html">Monte Carlo research</a><span>Quantitative modeling</span></div>
+</div></aside></div></div></section></main>
+<footer class="footer"><div class="shell footer-grid">
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="http://linkedin.com/in/atharvambarad.com">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+</div></footer><script src="../assets/site.js"></script></body></html>

@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Atharva Barad portfolio — product, operations, analytics, finance, and systems work.">
+<meta name="author" content="Atharva Barad"><title>Automating orchestration without automating judgment — Atharva Barad</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head><body>
+<header class="site-header"><div class="shell nav">
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+</div></header>
+
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / Automating orchestration without automating judgment</div>
+<div class="eyebrow">
+AI systems · 8 min read
+</div><h1>Automating orchestration without automating judgment</h1></div></section>
+<section class="section"><div class="shell"><div class="case-layout"><article class="prose">
+<p>I use AI heavily in my personal software project. At first, that meant opening a session, explaining the project state, asking for implementation help, reviewing the result, then manually carrying the outcome into another session for testing or follow-up work.</p>
+<p>The bottleneck eventually stopped being “can AI help with this task?” and became “can I coordinate many AI-assisted tasks without turning myself into a human message bus?”</p>
+<h2>The problem was state, not intelligence</h2><p>Separate sessions did not reliably share durable task state. A worker could finish implementation, but the next worker still needed to know what changed, which dependencies were satisfied, what files mattered, and what remained blocked.</p>
+<p>I designed a GitHub-backed relay where each worker has a durable state file, an explicit task contract, dependency rules, a revision counter, and a structured handoff. A local controller reads those states and activates workers only when their dependencies are satisfied.</p>
+<h2>What the automation handles</h2><ul><li>Durable task status</li><li>Dependency gating</li><li>Handoff persistence</li><li>Worker activation</li><li>Concurrency limits</li><li>Navigation/context injection</li></ul>
+<h2>What I intentionally kept manual</h2><p>I did not want “more automation” to mean “less accountability.” I still define the product behavior, choose acceptance criteria, inspect source evidence, test the app, resolve ambiguous tradeoffs, and decide whether work is actually done.</p>
+<div class="callout"><strong>The design principle:</strong> automate coordination, not responsibility.</div>
+<h2>Where it helped</h2><p>The relay made longer build-test-fix loops practical. One worker can implement a bounded change, another can review or test it after the dependency is satisfied, and the durable GitHub state prevents the workflow from depending on my memory of what a previous session said.</p>
+<h2>What I learned</h2><p>AI leverage is often a systems problem. The model can be capable and the workflow can still be bad. Reliability improved when I treated context, state, dependencies, and verification as product requirements rather than conversational conveniences.</p>
+</article>
+<aside class="sidebar"><h4>Related work</h4><div class="side-list">
+<div class="side-item"><a href="../projects/system.html">System</a><span>Personal product & AI workflow</span></div>
+<div class="side-item"><a href="../experience/united-indians.html">United Indians</a><span>Professional operations</span></div>
+<div class="side-item"><a href="../projects/monte-carlo.html">Monte Carlo research</a><span>Quantitative modeling</span></div>
+</div></aside></div></div></section></main>
+<footer class="footer"><div class="shell footer-grid">
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="http://linkedin.com/in/atharvambarad.com">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+</div></footer><script src="../assets/site.js"></script></body></html>
