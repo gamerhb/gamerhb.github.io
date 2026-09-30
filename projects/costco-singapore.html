@@ -31,6 +31,20 @@
 </svg>
 <figcaption><span class="caption-title">Country-screening result.</span> Singapore ranked first in the weighted model, but its lower vehicle ownership and higher property/labor costs challenged assumptions built into Costco’s traditional bulk-warehouse format.<span class="source-note">Scores and weighting from the final course project.</span></figcaption>
 </figure>
+<div class="interactive-lab" data-country-weight-explorer>
+<div class="lab-kicker">Interactive · country-screening model</div>
+<h3>Reweight the decision framework</h3>
+<p class="lab-copy">Change the top-level emphasis on Benefits, Costs, and Risks. The underlying country category scores come from the final screening tool; metric weights inside each category stay proportional to the original model.</p>
+<div class="weight-grid">
+<div class="weight-card"><label for="w-benefits">Benefits <output data-out-benefits>50%</output></label><input id="w-benefits" data-weight-benefits type="range" min="0" max="100" step="5" value="50"></div>
+<div class="weight-card"><label for="w-costs">Costs <output data-out-costs>30%</output></label><input id="w-costs" data-weight-costs type="range" min="0" max="100" step="5" value="30"></div>
+<div class="weight-card"><label for="w-risks">Risks <output data-out-risks>20%</output></label><input id="w-risks" data-weight-risks type="range" min="0" max="100" step="5" value="20"></div>
+</div>
+<div class="lab-controls"><button type="button" class="lab-chip" data-weight-reset>Reset to 50 / 30 / 20</button><span class="lab-copy">Current total: <strong data-weight-total>100%</strong></span></div>
+<div class="rank-results" data-weight-results></div>
+<div class="lab-status" data-weight-status aria-live="polite"></div>
+<p class="lab-note">This is a transparent reweighting exercise, not a new empirical estimate. It is meant to show why the ranking depends on governance choices as well as country data.</p>
+</div>
 <h2>Why the highest score still created an operating problem</h2><p>Singapore’s purchasing power, growth, infrastructure, and business environment were attractive. But low vehicle ownership and higher property/labor costs cut directly against assumptions embedded in Costco’s traditional bulk-warehouse model. A score could tell us which country deserved deeper work; it could not tell us how the business should be localized.</p>
 <div class="mini-grid"><div class="mini-card"><strong>Accessibility</strong><span>Bulk purchasing is easier when customers can move large orders. Lower vehicle ownership changes the convenience equation.</span></div><div class="mini-card"><strong>Real estate</strong><span>Higher property costs put pressure on the large-format warehouse footprint.</span></div><div class="mini-card"><strong>Membership economics</strong><span>Pricing had to support Costco’s value proposition while fitting local willingness to pay.</span></div><div class="mini-card"><strong>Localization</strong><span>Product mix, logistics, and operating design needed to respond to local shopping behavior rather than copy the U.S. format mechanically.</span></div></div>
 <h2>From screening to recommendation</h2><p>I also conducted pricing and financial research and contributed to membership-pricing, demand/revenue, and startup-capital analysis, plus substantial cross-module QA and final formatting. The project became a useful precursor to my later Monte Carlo work because it exposed the same conceptual boundary: a strategic factor can be important without automatically becoming a financial coefficient.</p>
