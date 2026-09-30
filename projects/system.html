@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Atharva Barad portfolio — product, operations, analytics, finance, and systems work.">
-<meta name="author" content="Atharva Barad"><title>System — Atharva Barad</title>
+<meta name="description" content="System is a Kotlin Multiplatform local-first personal data and analytics product for Android and Desktop, with explicit sync, history, analytics, and validation semantics.">
+<meta name="author" content="Atharva Barad"><title>System: A Local-First Personal Analytics Platform — Atharva Barad</title>
 <link rel="stylesheet" href="../assets/style.css">
 </head><body>
 <header class="site-header"><div class="shell nav">
@@ -10,9 +10,9 @@
 </div></header>
 
 <main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../projects.html">Projects</a> / System</div>
-<div class="eyebrow">Personal product · Aug 2026–Present</div><h1>System — Personal Data & <span class="accent">Analytics Platform.</span></h1><p class="lead">A private Kotlin Multiplatform application for Android and Desktop. The interesting part is not the screen count—it is the combination of product rules, local-first data, historical truth, analytics semantics, testing, and AI-assisted implementation.</p></div></section>
+<div class="eyebrow">Personal product · Kotlin Multiplatform · Aug 2026–Present</div><h1>System: A Local-First <span class="accent">Personal Analytics Platform.</span></h1><p class="lead">A private Android/Desktop product built around a harder question than “how do I log data?”: how should identity, history, offline changes, synchronization, analytics, and user intent behave when the system evolves over time?</p></div></section>
 <section class="section"><div class="shell"><div class="case-layout"><div class="prose">
-<div class="notice">System is a personal project with AI-assisted implementation. It is not paid software-engineering tenure, and I do not claim production-scale users or wholly unaided authorship.</div><figure class="evidence-figure" style="max-width:360px">
+<div class="notice"><strong>Project context:</strong> System is a personal product with AI-assisted implementation. I own the product behavior, requirements, acceptance criteria, testing decisions, and final validation; it is not presented as paid engineering tenure or production-scale software.</div><figure class="evidence-figure" style="max-width:360px">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAGwCAYAAADITjAqAACnyUlEQVR42uz9
 ebxlaVkdjq/17n3OrarupptJBZwiiAODAzMobSMKETROVcZ8M/yMGU0cwca5
 ugT1S3DWmIhDvgkxSlUEAaNE1KaRGYkgkzKDgEADTVd3Vd17zt7v+v3xTs+7
@@ -970,18 +970,21 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAADgTPYPvPRKYekmEl4AAAAASUVORK5CYII=
 " alt="System app logo" style="display:block;width:100%;height:auto;border-radius:14px">
-<figcaption>The existing System launcher artwork from the private application repository—not a portfolio-only replacement mark.</figcaption>
+<figcaption><span class="caption-title">System identity.</span> The launcher mark used by the Android application itself.</figcaption>
 </figure>
-<h2>The product problem</h2><p>I wanted a personal-data system that could begin with training and later expand into other domains without making every new module a separate app. That meant the hard problem was not simply “log a workout.” The product needed reusable data semantics, offline behavior, scheduling, history, analytics, and conflict rules that could survive over time.</p>
+<h2>The product question</h2><p>I wanted a personal-data system that could begin with training and later expand into other domains without making every new module a separate app. That meant the hard problem was not simply “log a workout.” The product needed reusable data semantics, offline behavior, scheduling, history, analytics, and conflict rules that could survive over time.</p>
 <h2>My ownership</h2><p>I define the product requirements, UI/design flows, analytics rules, offline/sync semantics, scope decisions, and acceptance criteria. I can read and modify the Kotlin and SQL directly. AI is used heavily to accelerate implementation, debugging, audits, and test expansion.</p>
-<h2>Local-first history & sync</h2><p>I designed behavior around stable record IDs, pending mutations, conflict handling, and separate local/remote/historical representations. A major design principle is that historical truth should not silently rewrite itself because a current object changes.</p>
+<h2>Local-first data without rewriting history</h2><p>I designed behavior around stable record IDs, pending mutations, conflict handling, and separate local/remote/historical representations. A major design principle is that historical truth should not silently rewrite itself because a current object changes.</p>
 <p>That led to regression cases around offline edits, timestamps, invalid observations, personal-best history, sync conflicts, and mutation ordering.</p>
-<h2>Analytics as product semantics</h2><p>The implemented analytics foundation spans multiple object types and treats Trend, History, and Consistency as context-aware behaviors rather than generic charts. I also defined deterministic performance-model rules, completion states, historical personal-best behavior, and time-window semantics.</p>
-<h2>The AI relay</h2><p>As the project grew, I found myself spending too much time manually carrying context between AI sessions. I designed a GitHub-backed multi-worker relay with durable worker state, task contracts, dependencies, handoffs, and controller-managed activation.</p>
+<div class="mini-grid"><div class="mini-card"><strong>Stable identity</strong><span>Records need durable IDs so edits, sync, and historical references keep pointing to the same thing.</span></div><div class="mini-card"><strong>Historical immutability</strong><span>Past executions should preserve the definition and values that were true when they happened.</span></div><div class="mini-card"><strong>Pending mutations</strong><span>Offline actions must remain explicit, replayable, and distinguishable from confirmed remote state.</span></div><div class="mini-card"><strong>Conflict semantics</strong><span>“Latest wins” is only safe when the system also defines which object and timestamp actually represent the user’s latest intent.</span></div></div>
+<h2>Analytics are product semantics, not decoration</h2><p>The implemented analytics foundation spans multiple object types and treats Trend, History, and Consistency as context-aware behaviors rather than generic charts. I also defined deterministic performance-model rules, completion states, historical personal-best behavior, and time-window semantics.</p>
+<h2>Scaling the development workflow with a durable AI relay</h2><p>As the project grew, I found myself spending too much time manually carrying context between AI sessions. I designed a GitHub-backed multi-worker relay with durable worker state, task contracts, dependencies, handoffs, and controller-managed activation.</p>
 <div class="callout"><strong>What it automates:</strong> orchestration, state, and handoff mechanics. <strong>What it does not automate:</strong> product judgment, evidence verification, field testing, or final acceptance.</div>
-<h2>Designing for failure, not just the happy path</h2><p>A recurring design rule is to prefer behavior that stays understandable when information is incomplete or operations happen out of order. That is why the product has explicit pending states, stable IDs, reversible actions, conflict semantics, archived/history boundaries, and regression cases for offline or invalid observations.</p>
+<h2>Failure-aware product design</h2><p>A recurring design rule is to prefer behavior that stays understandable when information is incomplete or operations happen out of order. That is why the product has explicit pending states, stable IDs, reversible actions, conflict semantics, archived/history boundaries, and regression cases for offline or invalid observations.</p>
 <h2>Validation loop</h2><p>I repeatedly run and field-test the app on Android and Desktop. Instead of relying only on compilation, I use explicit compile/runtime verification gates, regression cases, known-failure tracking, and small implementation batches.</p>
-<h2>What I would do next</h2><p>The long-term direction is to keep the data model modular while tightening the product layer: cleaner cross-domain primitives, more explainable analytics, better performance guarantees, and a stronger separation between historical facts and current definitions.</p>
+<p>That distinction matters because many failures are semantic rather than syntactic. A build can succeed while a quick-complete action resolves the wrong state, an analytics filter changes historical meaning, or an offline mutation survives locally but is lost during synchronization. I treat those as product correctness problems, not merely bugs to patch after launch.</p>
+<h2>Where the product is going</h2><p>The long-term direction is to keep the data model modular while tightening the product layer: cleaner cross-domain primitives, more explainable analytics, better performance guarantees, and a stronger separation between historical facts and current definitions.</p>
+<div class="artifact-bar"><a class="artifact-link" href="../articles/ai-orchestration.html">AI orchestration <span class="meta">article</span></a><a class="artifact-link" href="../articles/historical-truth-is-a-product-requirement.html">Historical truth <span class="meta">article</span></a></div>
 </div><aside class="sidebar"><h4>Stack & scope</h4><div class="side-list">
 <div class="side-item"><strong>Kotlin Multiplatform</strong><span>Android + Desktop</span></div><div class="side-item"><strong>Compose</strong><span>shared UI</span></div><div class="side-item"><strong>SQLDelight</strong><span>local persistence</span></div><div class="side-item"><strong>Supabase/Postgres</strong><span>cloud synchronization</span></div><div class="side-item"><strong>GitHub relay</strong><span>AI-assisted workflow orchestration</span></div>
 </div></aside></div></div></section></main>

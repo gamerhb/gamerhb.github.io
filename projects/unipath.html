@@ -1,25 +1,25 @@
 <!doctype html>
 <html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Atharva Barad portfolio — product, operations, analytics, finance, and systems work.">
-<meta name="author" content="Atharva Barad"><title>UniPath — Atharva Barad</title>
+<meta name="description" content="UniPath student-lifecycle platform: six-layer architecture, 34-table PostgreSQL schema, Python proof of concept, ranking, semantic matching, and responsible-AI design.">
+<meta name="author" content="Atharva Barad"><title>UniPath: Designing an AI-Assisted Student Lifecycle Platform — Atharva Barad</title>
 <link rel="stylesheet" href="../assets/style.css">
 </head><body>
 <header class="site-header"><div class="shell nav">
 <a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
 </div></header>
 
-<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../projects.html">Projects</a> / UniPath</div>
-<div class="eyebrow">Five-person MIS capstone · Mar–Jun 2026</div><h1>UniPath Student Lifecycle <span class="accent">Platform.</span></h1><p class="lead">A system-design capstone where my strongest individual ownership was the relational model and Python proof of concept.</p></div></section>
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../projects.html">Projects</a> / Product & information systems</div>
+<div class="eyebrow">MIS capstone · Five-person team · Mar–Jun 2026</div><h1>UniPath: Designing an AI-Assisted <span class="accent">Student Lifecycle Platform.</span></h1><p class="lead">A product and systems capstone that translated a broad student-support idea into user roles, a six-layer architecture, a normalized data model, prototype ranking/matching logic, and explicit limits on what the AI could claim.</p></div></section>
 <section class="section"><div class="shell"><div class="case-layout"><div class="prose">
-<div class="notice">Prototype/design work using synthetic/prepared data. No production backend, live university integrations, production database, or validated real-admissions predictive accuracy.</div>
-<h2>Data model</h2><p>I personally designed the normalized 34-table PostgreSQL schema/ERD with UUID primary keys, explicit foreign keys, and junction relationships.</p>
-<h2>Ranking engine</h2><p>The design used weighted composite scoring across ROI, academic quality, satisfaction, industry outcomes, location, and extracurricular opportunities, normalized via min-max scaling.</p>
-<h2>Semantic matching</h2><p>The match engine combined OpenAI embeddings, cosine similarity, semantic matching, and hard filters to align student goals with university/course descriptions.</p>
-<h2>Admissions-likelihood component</h2><p>The POC used logistic regression to produce probability, confidence, profile-gap, and risk-indicator outputs. These were prototype outputs, not validated admissions predictions.</p>
-<h2>Ownership boundary</h2><p class="ownership-note">Individual ownership: the normalized 34-table PostgreSQL schema/ERD and the Python proof of concept. Shared team work: the broader six-layer architecture, API/data-flow concepts, user journeys, business model, and governance considerations.</p>
-<p>Keeping that boundary explicit matters to me because the portfolio should show what I personally built without quietly absorbing team work into an individual claim.</p>
-<h2>Broader architecture</h2><p>I co-developed the six-layer architecture, API/data-flow concepts, role-based user journeys, and explainability/fallback/bias/privacy considerations with the team.</p>
+<div class="notice"><strong>Prototype boundary:</strong> the project used synthetic/prepared data and design-level integrations. It did not include a production backend, live university feeds, a deployed production database, or validated real-world admissions prediction.</div>
+<h2>My core ownership: the relational model</h2><p>I personally designed the normalized 34-table PostgreSQL schema/ERD with UUID primary keys, explicit foreign keys, and junction relationships.</p>
+<h2>Ranking without pretending preferences are universal</h2><p>The design used weighted composite scoring across ROI, academic quality, satisfaction, industry outcomes, location, and extracurricular opportunities, normalized via min-max scaling.</p>
+<h2>Semantic matching plus hard constraints</h2><p>The match engine combined OpenAI embeddings, cosine similarity, semantic matching, and hard filters to align student goals with university/course descriptions.</p>
+<h2>Admissions likelihood as a prototype signal—not a verdict</h2><p>The POC used logistic regression to produce probability, confidence, profile-gap, and risk-indicator outputs. These were prototype outputs, not validated admissions predictions.</p>
+<h2>What I built versus what the team built</h2><p class="ownership-note"><strong>Individual ownership:</strong> the normalized 34-table PostgreSQL schema/ERD and Python proof of concept. <strong>Shared team work:</strong> the broader six-layer architecture, API/data-flow concepts, user journeys, business model, and governance considerations.</p>
+<p>That distinction matters because systems projects blur ownership easily. I want the architecture to show the team’s integrated design while still making clear which technical artifacts I personally produced.</p>
+<h2>How the pieces fit into a complete student lifecycle</h2><p>I co-developed the six-layer architecture, API/data-flow concepts, role-based user journeys, and explainability/fallback/bias/privacy considerations with the team.</p>
 <figure class="evidence-figure">
 <svg viewBox="0 0 980 570" role="img" aria-label="UniPath six-layer architecture">
   <style>.ut{font:13px Inter,Arial,sans-serif;fill:#373936}.uh{font:700 18px Inter,Arial,sans-serif;fill:#171817}.ul{font:700 14px Inter,Arial,sans-serif;fill:#171817}.ub{fill:#fffdf8;stroke:#d8d3c9;stroke-width:1.5}.ua{fill:#e5eee9;stroke:#173b35;stroke-width:1.5}.uo{fill:#fff5e9;stroke:#bd4a1c;stroke-width:1.5}</style>
@@ -33,9 +33,11 @@
   <rect class="ub" x="45" y="441" width="890" height="82" rx="11"/><text class="ul" x="65" y="467">6 · External integrations</text><text class="ut" x="235" y="467">OpenAI · university feeds · employer/job feeds · email/SMS · Stripe · analytics tooling</text>
   <text class="ut" x="65" y="500">Phased rollout: Phase I discovery/apply → Phase II enrolled student support → Phase III alumni/career feedback loop</text>
 </svg>
-<figcaption>Portfolio reconstruction from the final capstone architecture section. The architecture was shared team work; the relational schema/ERD and Python proof of concept are called out separately as my individual ownership.</figcaption>
+<figcaption><span class="caption-title">Six-layer product architecture.</span> Users, front-end experiences, APIs, data, AI/analytics, and external integrations were designed as separate but connected layers, with a phased lifecycle from discovery through alumni/career feedback.<span class="source-note">Adapted from the final team capstone architecture; 34-table schema and Python POC were my individual artifacts.</span></figcaption>
 </figure>
-<h2>Business model</h2><p>The team modeled $356,300 Year 1 revenue against $240,000 operating cost, producing a $116,300 operating surplus. These were academic projections, not realized results.</p>
+<h2>Business model and implementation realism</h2><p>The team modeled $356,300 in Year 1 revenue against $240,000 in operating cost, producing a $116,300 academic operating surplus. More important than the number itself was connecting product architecture to a plausible SaaS model: who pays, which features create value for each side, what data infrastructure costs money, and which integrations would need to be phased rather than promised all at once.</p>
+<h2>Responsible-AI constraints were part of the design</h2><p>The team explicitly considered explainability, fallback behavior, bias, privacy, and role-based access. In the prototype, AI-assisted ranking or matching was meant to support student decisions, not silently convert uncertain signals into authoritative admissions or career outcomes.</p>
+<div class="artifact-bar"><a class="artifact-link" href="../articles/ai-confidence-is-not-user-trust.html">AI confidence vs. user trust <span class="meta">article</span></a></div>
 </div><aside class="sidebar"><h4>My individual ownership</h4><div class="side-list"><div class="side-item"><strong>34 tables</strong><span>normalized PostgreSQL schema/ERD</span></div><div class="side-item"><strong>Python POC</strong><span>independently built</span></div><div class="side-item"><strong>Embeddings</strong><span>cosine similarity + hard filters</span></div><div class="side-item"><strong>Logistic regression</strong><span>prototype admission-likelihood outputs</span></div></div></aside></div></div></section></main>
 
 <footer class="footer"><div class="shell footer-grid">

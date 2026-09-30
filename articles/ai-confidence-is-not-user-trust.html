@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Lessons from designing UniPath about explainability, uncertainty, and why predictive outputs need product boundaries.">
+<meta name="author" content="Atharva Barad"><title>AI confidence is not user trust — Atharva Barad</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head><body>
+<header class="site-header"><div class="shell nav">
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a href="../about.html">About</a><a href="../experience.html">Experience</a><a href="../projects.html">Projects</a><a class="active" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+</div></header>
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / AI confidence is not user trust</div>
+<div class="eyebrow">Responsible AI · UniPath · 7 min read</div><h1>AI confidence is not <span class="accent">user trust.</span></h1></div></section>
+<section class="section"><div class="shell"><div class="case-layout"><article class="prose">
+<p class="article-standfirst">A model can output 82% with two decimal places. That does not mean the user should experience the result as an authoritative prediction.</p>
+<p>In the UniPath capstone, we explored AI-assisted university ranking, semantic matching, course recommendations, academic-risk signals, and an admissions-likelihood component. The technical temptation was obvious: make the output feel smart by making it precise.</p>
+
+<h2>Precision can hide epistemic weakness</h2>
+<p>Our proof of concept used prepared/synthetic data. The admissions-likelihood component used logistic regression, but it was not trained and validated on a production-scale admissions dataset. Calling the resulting probability “your chance of admission” would have been a product-design mistake even if the code was correct.</p>
+<p>The honest output needed context: what variables were included, where the data came from, which factors were missing, and how the user should treat the number.</p>
+
+<h2>Ranking has the same problem</h2>
+<p>A weighted university score can look objective while encoding subjective preferences about ROI, academic quality, satisfaction, location, industry outcomes, or extracurricular opportunities. The weights are not universal truths.</p>
+<p>A better experience makes those priorities visible and lets the user understand why a school appears where it does.</p>
+
+<h2>Semantic similarity is useful—but it is not understanding</h2>
+<p>The prototype combined embeddings and cosine similarity with hard filters. That combination mattered. Embeddings can surface schools or courses that are semantically aligned with a student’s goals, but they should not override explicit constraints such as location, program availability, price, or eligibility.</p>
+<div class="callout"><strong>Product principle:</strong> use probabilistic/semantic systems to expand or prioritize options; use explicit rules for constraints that should not be guessed.</div>
+
+<h2>Fallback behavior is part of responsible AI</h2>
+<p>If an AI recommendation cannot be generated, or the confidence is low, the product still needs a useful state. “No answer” should become a deterministic search/filter experience, an explanation of missing information, or a request for more input—not a fabricated recommendation.</p>
+
+<h2>Trust comes from legibility</h2>
+<p>For a high-stakes student decision, I would rather show a user a slightly less magical interface that explains its reasoning than a polished probability that suggests more certainty than the evidence supports.</p>
+<p>That means surfacing drivers, allowing users to adjust preferences, separating hard constraints from soft matching, documenting data limitations, and making it easy to ignore or override the system.</p>
+
+<h2>What changed in how I think about AI products</h2>
+<p>I used to think of responsible AI mainly as a model-quality question: bias, accuracy, and privacy. I now think product semantics matter just as much. The interface decides whether an uncertain signal feels like advice, prediction, ranking, or fact.</p>
+<p>An AI system earns trust when the user can understand what kind of claim it is making—and what kind of claim it is not.</p>
+</article><aside class="sidebar"><h4>Related work</h4><div class="side-list"><div class="side-item"><a href="../projects/unipath.html">UniPath</a><span>Architecture and prototype case study</span></div><div class="side-item"><a href="./scores-vs-decisions.html">Scores vs. decisions</a><span>A similar issue in strategy models</span></div><div class="side-item"><a href="./ai-orchestration.html">AI orchestration</a><span>Human judgment in development workflows</span></div></div></aside></div></div></section></main>
+<footer class="footer"><div class="shell footer-grid">
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+</div></footer><script src="../assets/site.js"></script></body></html>

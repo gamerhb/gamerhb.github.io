@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="How I approach incomplete information by separating what can be researched from what must be handled with ranges, scenarios, and reversible decisions.">
+<meta name="author" content="Atharva Barad"><title>Robust decisions beat perfect forecasts — Atharva Barad</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head><body>
+<header class="site-header"><div class="shell nav">
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a href="../about.html">About</a><a href="../experience.html">Experience</a><a href="../projects.html">Projects</a><a class="active" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+</div></header>
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / Robust decisions beat perfect forecasts</div>
+<div class="eyebrow">Decision-making · Cross-project · 7 min read</div><h1>Robust decisions beat <span class="accent">perfect forecasts.</span></h1></div></section>
+<section class="section"><div class="shell"><div class="case-layout"><article class="prose">
+<p class="article-standfirst">When I do not know something, I am comfortable saying so. The harder question is what to do when a decision still has to be made before all of the uncertainty can be removed.</p>
+<p>My preferred answer to missing information is simple: get the information. Research it, ask the person who knows, check the source, or wait if the decision can wait.</p>
+<p>But many decisions have uncertainty that cannot be eliminated on the timeline available. That is where I try to stop thinking in terms of “the forecast” and start thinking in terms of a range of plausible worlds.</p>
+
+<h2>Separate unknown from unknowable</h2>
+<p>Some gaps are research problems. A contract term, a historical cost, a customer requirement, or a data definition may be discoverable. Other gaps are inherently forward-looking: future demand, FX, a competitor response, weather, execution delays, or an edge case that has never occurred before.</p>
+<p>I do not want to treat both categories the same. Researchable uncertainty should be reduced. Structural uncertainty should be exposed.</p>
+
+<h2>Start with the downside that would change the decision</h2>
+<p>I often ask a version of: what has to go wrong before this stops being acceptable?</p>
+<p>In capital budgeting, that becomes sensitivity and downside scenarios. In the Monte Carlo project, it became distributions and financing rules. In operations, it becomes contingency planning and fallback procedures. In software, it becomes offline behavior, reversible actions, and explicit failure states.</p>
+
+<h2>Robust does not mean pessimistic</h2>
+<p>The goal is not to optimize everything around a disaster scenario. That can make a system expensive, slow, or unusable. The goal is to find the important failure modes and make sure the solution degrades safely enough across a useful range.</p>
+<div class="reasoning-block"><h3>My rough hierarchy</h3><p><strong>First:</strong> remove uncertainty that is cheap to resolve. <strong>Second:</strong> identify the variables that can actually change the decision. <strong>Third:</strong> test the downside and the interaction among those variables. <strong>Fourth:</strong> make irreversible commitments only when the remaining uncertainty is acceptable.</p></div>
+
+<h2>Ranges are often more honest than one number</h2>
+<p>A confidence interval, scenario range, or sensitivity surface can feel less decisive than a point estimate. But a precise number does not make an uncertain system less uncertain.</p>
+<p>I would rather tell someone “the project works across this range, fails below this threshold, and these two assumptions drive most of the risk” than give a single polished forecast without showing its fragility.</p>
+
+<h2>Reversibility is another form of robustness</h2>
+<p>Not every decision needs a better forecast. Sometimes it needs a smaller first commitment. Stage the investment. Pilot the process. Add a review gate. Make the action reversible. Preserve the history so you can learn from it.</p>
+<p>That is one reason the Moderate rollout in my research became interesting: it made later expansion conditional on what the project had actually earned and could finance, instead of assuming every future commitment would happen.</p>
+
+<h2>The habit I am trying to build</h2>
+<p>I do not want uncertainty to become an excuse for indecision, and I do not want confidence to become a substitute for evidence. A robust decision is one where I can explain what I know, what I do not know, what could change the outcome, and why the chosen action still makes sense across the range that matters.</p>
+</article><aside class="sidebar"><h4>Related work</h4><div class="side-list"><div class="side-item"><a href="../projects/monte-carlo.html">Monte Carlo research</a><span>Uncertainty modeled explicitly</span></div><div class="side-item"><a href="../projects/costco-capital-budgeting.html">Capital budgeting</a><span>Sensitivity and downside</span></div><div class="side-item"><a href="../projects/system.html">System</a><span>Failure-aware product design</span></div></div></aside></div></div></section></main>
+<footer class="footer"><div class="shell footer-grid">
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+</div></footer><script src="../assets/site.js"></script></body></html>
