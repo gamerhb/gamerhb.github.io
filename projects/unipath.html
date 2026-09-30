@@ -17,6 +17,27 @@
 <h2>Ranking without pretending preferences are universal</h2><p>The design used weighted composite scoring across ROI, academic quality, satisfaction, industry outcomes, location, and extracurricular opportunities, normalized via min-max scaling.</p>
 <h2>Semantic matching plus hard constraints</h2><p>The match engine combined OpenAI embeddings, cosine similarity, semantic matching, and hard filters to align student goals with university/course descriptions.</p>
 <h2>Admissions likelihood as a prototype signal—not a verdict</h2><p>The POC used logistic regression to produce probability, confidence, profile-gap, and risk-indicator outputs. These were prototype outputs, not validated admissions predictions.</p>
+<div class="interactive-lab" data-unipath-pipeline>
+<div class="lab-kicker">Interactive · Python POC logic</div>
+<h3>See when UniPath would use AI matching—or fall back</h3>
+<p class="lab-copy">The POC deliberately gated semantic matching. Hard filters run first; AI matching only activates after minimum profile completeness and goal-text thresholds and only when the user opts in and the AI service is available.</p>
+<div class="lab-controls">
+<div class="lab-field"><label for="up-complete">Profile completeness: <output data-up-completeness-out>55%</output></label><input id="up-complete" data-up-completeness type="range" min="0" max="100" step="5" value="55"></div>
+<div class="lab-field"><label for="up-words">Goal statement words: <output data-up-words-out>30</output></label><input id="up-words" data-up-words type="range" min="0" max="60" step="1" value="30"></div>
+</div>
+<div class="segmented">
+<label class="lab-chip"><input data-up-ai type="checkbox" checked> AI service available</label>
+<label class="lab-chip"><input data-up-optin type="checkbox" checked> User opted in</label>
+</div>
+<div class="flow-demo">
+<div class="flow-step"><div class="step-num">1</div><div><strong>Hard filters</strong><span>Budget · qualification level · location preference · language of instruction.</span></div></div>
+<div class="flow-step" data-up-ai-step><div class="step-num">2</div><div><strong>Semantic match</strong><span>Goal statement + candidate descriptions → embeddings → cosine similarity.</span></div></div>
+<div class="flow-step" data-up-ai-step><div class="step-num">3</div><div><strong>Admission likelihood + explanation</strong><span>Prototype calibrated logistic output + profile gap analysis; still disclosed as an estimate.</span></div></div>
+</div>
+<div class="lab-metrics"><div class="lab-metric"><strong data-up-mode></strong><span>active result mode</span></div><div class="lab-metric"><strong>40%</strong><span>minimum profile completeness</span></div><div class="lab-metric"><strong>20 words</strong><span>minimum goal length</span></div><div class="lab-metric"><strong>~90%</strong><span>candidates removed by hard filters in the design</span></div></div>
+<div class="lab-status" data-up-status aria-live="polite"></div>
+<p class="lab-note">This reproduces the decision logic documented in the capstone/POC. It does not call an external AI model or produce a real admissions prediction on the portfolio site.</p>
+</div>
 <h2>What I built versus what the team built</h2><p class="ownership-note"><strong>Individual ownership:</strong> the normalized 34-table PostgreSQL schema/ERD and Python proof of concept. <strong>Shared team work:</strong> the broader six-layer architecture, API/data-flow concepts, user journeys, business model, and governance considerations.</p>
 <p>That distinction matters because systems projects blur ownership easily. I want the architecture to show the team’s integrated design while still making clear which technical artifacts I personally produced.</p>
 <h2>How the pieces fit into a complete student lifecycle</h2><p>I co-developed the six-layer architecture, API/data-flow concepts, role-based user journeys, and explainability/fallback/bias/privacy considerations with the team.</p>
