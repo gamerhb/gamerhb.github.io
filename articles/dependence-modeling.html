@@ -10,9 +10,9 @@
 </div></header>
 
 <main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / Why dependence modeling became the hardest part of my Monte Carlo project</div>
-<div class="eyebrow">Quantitative modeling · 9 min read</div><h1>Why dependence modeling became the hardest part of my Monte Carlo project</h1></div></section>
+<div class="eyebrow">Quantitative modeling · Monte Carlo research · 9 min read</div><h1>Why dependence modeling became the hardest part of my <span class="accent">Monte Carlo project.</span></h1></div></section>
 <section class="section"><div class="shell"><div class="case-layout"><article class="prose">
-<p>Monte Carlo simulation sounds like a problem about random numbers. In my international-expansion research, the random-number generation became one of the easier parts.</p>
+<p class="article-standfirst">Sampling one variable is easy. Sampling 23 country variables so their individual distributions and relationships remain economically coherent is a different problem.</p><p>Monte Carlo simulation sounds like a problem about random numbers. In my international-expansion research, the random-number generation became one of the easier parts.</p>
 <h2>Independent draws would have been wrong</h2><p>Country variables such as macroeconomic, institutional, cost, and market conditions are not independent. Sampling each factor separately would create combinations that look statistically convenient but economically incoherent.</p>
 <h2>Marginals first</h2><p>I calibrated income-group-specific empirical marginals using adaptive/asymmetric kernel estimation where appropriate, partial pooling, numerical grids, and large diagnostic draw sets. That gave each factor a distribution that could reflect its own shape rather than forcing everything into a normal distribution.</p>
 <h2>Then the joint structure</h2><p>I estimated pairwise Spearman dependence and converted it through a Gaussian-copula relationship. But an assembled pairwise dependence matrix is not guaranteed to be positive semidefinite—the numerical property required to use it as a valid correlation structure.</p>
