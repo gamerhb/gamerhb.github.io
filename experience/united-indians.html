@@ -17,6 +17,22 @@
 <h2>Turning volunteer reporting into a usable operating system</h2><p>The existing volunteer reporting process was paper-heavy and slow. A full quarterly report typically took roughly 4–8 hours, often one to two shifts. I moved the workflow online and rebuilt it around required fields, validation/error flags, correction paths, Excel consolidation, and reusable reporting logic.</p>
 <div class="callout"><strong>Result:</strong> the full quarterly process fell to about 40 minutes, with refresh/consolidation typically around 10–15 minutes.</div>
 <p>The important lesson was that digitization alone would not have solved the problem. The biggest gains came from removing re-entry, surfacing errors earlier, and making corrections easier.</p>
+<div class="interactive-lab" data-reporting-demo>
+<div class="lab-kicker">Interactive · workflow redesign</div>
+<h3>Follow a volunteer record through the reporting system</h3>
+<p class="lab-copy">The improvement was not just “paper → form.” Try a clean submission, an exception, or the fallback path to see where validation and correction happen before quarterly reporting.</p>
+<div class="segmented"><button type="button" class="active" data-report-mode="complete">Complete form</button><button type="button" data-report-mode="missing">Missing time-out</button><button type="button" data-report-mode="fallback">Text-message fallback</button></div>
+<div class="demo-record" data-report-record></div>
+<div class="lab-status" data-report-status aria-live="polite"></div>
+<div class="flow-demo">
+<div class="flow-step"><div class="step-num">1</div><div><strong>Capture</strong><span>Date, time, task, description, and evidence enter one structured record.</span></div></div>
+<div class="flow-step"><div class="step-num">2</div><div><strong>Validate / correct</strong><span>Required-field checks and exception follow-up happen before the quarter-end report.</span></div></div>
+<div class="flow-step"><div class="step-num">3</div><div><strong>Consolidate</strong><span>Excel / Power Query / formulas reuse the same records instead of re-keying them.</span></div></div>
+<div class="flow-step"><div class="step-num">4</div><div><strong>Report + analyze</strong><span>Volunteer hours, activities, seasonal patterns, and grant evidence become filterable outputs.</span></div></div>
+</div>
+<div class="lab-metrics"><div class="lab-metric"><strong>4–8h</strong><span>old quarterly process</span></div><div class="lab-metric"><strong>~40m</strong><span>full redesigned quarterly process</span></div><div class="lab-metric"><strong>10–15m</strong><span>clean refresh / consolidation</span></div><div class="lab-metric"><strong>1 dataset</strong><span>reporting + operational analysis</span></div></div>
+<p class="lab-note">Example records are illustrative; the workflow stages and timing come from the operating process I built and used.</p>
+</div>
 <h2>Grant ownership under real budget constraints</h2><p>I developed the proposal and budget for an awarded $73,000 King County WaterWorks grant, with a manager formally approving/submitting it. I tracked spending, coordinated purchases with accounting/management, and completed eight quarterly compliance reports across overlapping grant cycles.</p>
 <h2>From ad hoc mentoring to a repeatable internship program</h2><p>I designed, onboarded, and managed an eight-person contracted intern workforce through a six-week horticulture and water-systems program. That included scheduling, expectations, structured learning plans, weekly check-ins, individualized feedback, performance tracking, and day-to-day supervision.</p>
 <h2>Feedback that changed how I worked</h2><p>I also learned that delivering good work is not enough if the people around you cannot see what is happening. I received feedback that my work was getting done, but my visibility and communication were weak—especially important as a younger employee working across staff and managers.</p>
