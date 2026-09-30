@@ -17,10 +17,27 @@
 <h2>Ranking engine</h2><p>The design used weighted composite scoring across ROI, academic quality, satisfaction, industry outcomes, location, and extracurricular opportunities, normalized via min-max scaling.</p>
 <h2>Semantic matching</h2><p>The match engine combined OpenAI embeddings, cosine similarity, semantic matching, and hard filters to align student goals with university/course descriptions.</p>
 <h2>Admissions-likelihood component</h2><p>The POC used logistic regression to produce probability, confidence, profile-gap, and risk-indicator outputs. These were prototype outputs, not validated admissions predictions.</p>
+<h2>Ownership boundary</h2><p class="ownership-note">Individual ownership: the normalized 34-table PostgreSQL schema/ERD and the Python proof of concept. Shared team work: the broader six-layer architecture, API/data-flow concepts, user journeys, business model, and governance considerations.</p>
+<p>Keeping that boundary explicit matters to me because the portfolio should show what I personally built without quietly absorbing team work into an individual claim.</p>
 <h2>Broader architecture</h2><p>I co-developed the six-layer architecture, API/data-flow concepts, role-based user journeys, and explainability/fallback/bias/privacy considerations with the team.</p>
+<figure class="evidence-figure">
+<svg viewBox="0 0 980 570" role="img" aria-label="UniPath six-layer architecture">
+  <style>.ut{font:13px Inter,Arial,sans-serif;fill:#373936}.uh{font:700 18px Inter,Arial,sans-serif;fill:#171817}.ul{font:700 14px Inter,Arial,sans-serif;fill:#171817}.ub{fill:#fffdf8;stroke:#d8d3c9;stroke-width:1.5}.ua{fill:#e5eee9;stroke:#173b35;stroke-width:1.5}.uo{fill:#fff5e9;stroke:#bd4a1c;stroke-width:1.5}</style>
+  <text class="uh" x="20" y="30">UniPath — six-layer modular architecture</text>
+  <text class="ut" x="20" y="54">Shared team architecture; my individual ownership centered on the 34-table schema/ERD and Python POC.</text>
+  <rect class="ub" x="45" y="85" width="890" height="58" rx="11"/><text class="ul" x="65" y="110">1 · Users</text><text class="ut" x="190" y="110">Prospective · Enrolled · Alumni · University Admin · Platform Admin · Employers</text>
+  <rect class="ub" x="45" y="158" width="890" height="58" rx="11"/><text class="ul" x="65" y="183">2 · Frontend</text><text class="ut" x="190" y="183">Student portal · University admin portal · Platform dashboard · Employer portal</text>
+  <rect class="ua" x="45" y="231" width="890" height="75" rx="11"/><text class="ul" x="65" y="256">3 · Backend APIs</text><text class="ut" x="190" y="256">Auth/roles · Profiles · Universities/courses · Ranking · AI match · Admission likelihood</text><text class="ut" x="190" y="279">Course recommendation · Academic progress · Alumni · Notifications · Payments · Audit/compliance</text>
+  <rect class="uo" x="45" y="321" width="430" height="105" rx="11"/><text class="ul" x="65" y="347">4 · Data</text><text class="ut" x="65" y="374">PostgreSQL + pgvector</text><text class="ut" x="65" y="397">Search · object storage · analytics/BI</text><text class="ut" x="65" y="418"><tspan font-weight="700">34 normalized relational tables</tspan></text>
+  <rect class="uo" x="505" y="321" width="430" height="105" rx="11"/><text class="ul" x="525" y="347">5 · AI &amp; Analytics</text><text class="ut" x="525" y="374">Ranking · semantic matching · admission likelihood</text><text class="ut" x="525" y="397">Course intelligence · academic analytics · alumni ROI feedback</text>
+  <rect class="ub" x="45" y="441" width="890" height="82" rx="11"/><text class="ul" x="65" y="467">6 · External integrations</text><text class="ut" x="235" y="467">OpenAI · university feeds · employer/job feeds · email/SMS · Stripe · analytics tooling</text>
+  <text class="ut" x="65" y="500">Phased rollout: Phase I discovery/apply → Phase II enrolled student support → Phase III alumni/career feedback loop</text>
+</svg>
+<figcaption>Portfolio reconstruction from the final capstone architecture section. The architecture was shared team work; the relational schema/ERD and Python proof of concept are called out separately as my individual ownership.</figcaption>
+</figure>
 <h2>Business model</h2><p>The team modeled $356,300 Year 1 revenue against $240,000 operating cost, producing a $116,300 operating surplus. These were academic projections, not realized results.</p>
 </div><aside class="sidebar"><h4>My individual ownership</h4><div class="side-list"><div class="side-item"><strong>34 tables</strong><span>normalized PostgreSQL schema/ERD</span></div><div class="side-item"><strong>Python POC</strong><span>independently built</span></div><div class="side-item"><strong>Embeddings</strong><span>cosine similarity + hard filters</span></div><div class="side-item"><strong>Logistic regression</strong><span>prototype admission-likelihood outputs</span></div></div></aside></div></div></section></main>
 
 <footer class="footer"><div class="shell footer-grid">
-<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="http://linkedin.com/in/atharvambarad.com">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
 </div></footer><script src="../assets/site.js"></script></body></html>
