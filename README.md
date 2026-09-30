@@ -14,13 +14,17 @@ A static multi-page portfolio for GitHub Pages.
 - `Atharva_Barad_Resume.pdf` — current downloadable resume
 - `assets/` — shared CSS/JS
 
-## Publish
-1. Create a public GitHub repository named `atharvambarad.github.io`.
-2. Upload the contents of this folder to the repo root.
-3. In GitHub → Settings → Pages, select Deploy from a branch.
-4. Select the default branch and `/ (root)`.
-5. The site will be available at `https://gamerhb.github.io/atharvambarad.github.io/`.
+## GitHub Pages
+
+This repository is the user-site repository for the `gamerhb` GitHub account.
+
+Publishing source:
+- Branch: `main`
+- Folder: `/ (root)`
+- Default site URL: `https://gamerhb.github.io/`
 
 ## Public/private boundary
 Do not make `gamerhb/System` or `gamerhb/career-hub` public just to support this portfolio.
 The site describes private work without exposing private source code.
+
+<!-- deployment refresh: 2026-09-30 -->
