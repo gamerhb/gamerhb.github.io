@@ -121,3 +121,12 @@ img{max-width:100%}
   .metric-row{grid-template-columns:1fr}
   .section-head{align-items:start;flex-direction:column}
 }
+
+
+/* Portfolio evidence / reasoning additions — 2026-09-30 */
+.evidence-figure{margin:28px 0;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;overflow:hidden}
+.evidence-figure figcaption{margin-top:10px;color:var(--muted);font-size:.82rem}
+.evidence-figure svg{display:block;width:100%;height:auto}
+.reasoning-block{margin:26px 0;padding:20px;border:1px solid var(--line);border-radius:16px;background:var(--paper)}
+.reasoning-block h3{margin-top:0}
+.ownership-note{font-size:.92rem;color:var(--muted);border-left:3px solid var(--accent);padding-left:14px;margin:18px 0}
