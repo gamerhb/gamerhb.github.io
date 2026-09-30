@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Why local-first products need explicit rules for identity, edits, sync, and historical immutability—not just database tables.">
+<meta name="author" content="Atharva Barad"><title>Historical truth is a product requirement — Atharva Barad</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head><body>
+<header class="site-header"><div class="shell nav">
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a href="../about.html">About</a><a href="../experience.html">Experience</a><a href="../projects.html">Projects</a><a class="active" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+</div></header>
+<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../articles.html">Articles</a> / Historical truth is a product requirement</div>
+<div class="eyebrow">Product systems · System · 8 min read</div><h1>Historical truth is a <span class="accent">product requirement.</span></h1></div></section>
+<section class="section"><div class="shell"><div class="case-layout"><article class="prose">
+<p class="article-standfirst">A personal tracking app looks simple until yesterday’s data can change because today’s definition changed. That is where database design becomes product design.</p>
+<p>System started as a training app, but the data model had to support more than entering numbers into a form. Exercises can be renamed. Workouts can be edited. Schedules can be archived. A user can log something offline and sync later. Analytics can compute a personal best using history that must not silently rewrite itself.</p>
+
+<h2>Current definitions and historical facts are different objects</h2>
+<p>If I rename an exercise from “Incline Dumbbell Press” to something else, should a workout from six months ago display the new name? Sometimes yes for convenience. Sometimes no because the historical record is evidence of what actually happened under a specific definition.</p>
+<p>The same problem appears in business systems: product catalogs, pricing plans, customer segments, accounting classifications, or policy rules all change over time. If history points only to the current mutable definition, the past can become impossible to reconstruct.</p>
+
+<h2>Stable IDs are necessary but not sufficient</h2>
+<p>System uses stable identifiers so local and remote copies refer to the same logical record. But identity alone does not solve history. The product also needs rules for which properties are looked up live and which are snapshotted into an execution or observation.</p>
+
+<div class="mini-grid">
+<div class="mini-card"><strong>Definition</strong><span>What the object means now.</span></div>
+<div class="mini-card"><strong>Execution</strong><span>What was scheduled or performed at a particular time.</span></div>
+<div class="mini-card"><strong>Observation</strong><span>The recorded value or state produced by that execution.</span></div>
+<div class="mini-card"><strong>Analytics</strong><span>A derived view that must respect which version of history is authoritative.</span></div>
+</div>
+
+<h2>Offline behavior makes the rule visible</h2>
+<p>Once the app can work offline, there may be a local edit that has not reached the server, a remote version changed on another device, and a historical execution that references one of them. “Just sync the latest row” is not a complete product specification.</p>
+<p>I defined pending mutations, conflict handling, ordering rules, and explicit boundaries between current objects and historical records. Quick actions were made reversible. Archived entities could be restored under defined constraints. Invalid or incomplete observations had distinct states rather than being silently converted into zeroes.</p>
+
+<h2>Analytics made semantic mistakes expensive</h2>
+<p>A chart can look correct while answering the wrong question. If a personal-best calculation reads a mutable current target instead of the historical performed set, it can rewrite the user’s record without changing a single raw observation. If “skipped” and “not complete” collapse into the same state, consistency analytics lose meaning.</p>
+<div class="callout"><strong>The rule I use:</strong> every derived metric should be traceable to the historical facts and product semantics that make it meaningful—not merely to whichever table is easiest to query.</div>
+
+<h2>Regression tests protect meaning, not only code</h2>
+<p>Some of System’s most useful regression tests exist because the failure would be subtle: timestamps, mutation ordering, personal-best history, offline edits, invalid observations, archived definitions, and analytics context. Compilation cannot catch those failures.</p>
+
+<h2>Why I think this matters beyond a personal app</h2>
+<p>Historical immutability is really an auditability problem. In finance, operations, healthcare, CRM, and analytics systems, people make decisions based on what the organization believes happened. If today’s configuration can silently rewrite yesterday’s facts, the system is not merely inconvenient—it is untrustworthy.</p>
+<p>That is why I think of history as a product requirement before I think of it as a database implementation detail.</p>
+</article><aside class="sidebar"><h4>Related work</h4><div class="side-list"><div class="side-item"><a href="../projects/system.html">System</a><span>Full product case study</span></div><div class="side-item"><a href="./ai-orchestration.html">AI orchestration</a><span>Development workflow</span></div><div class="side-item"><a href="./model-can-run-and-still-be-wrong.html">Model governance</a><span>The same traceability instinct in research</span></div></div></aside></div></div></section></main>
+<footer class="footer"><div class="shell footer-grid">
+<div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
+</div></footer><script src="../assets/site.js"></script></body></html>
