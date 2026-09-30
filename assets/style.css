@@ -62,7 +62,9 @@ img{max-width:100%}
 .card{grid-column:span 6;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow)}
 .card.wide{grid-column:span 12}
 .card.third{grid-column:span 4}
+.card.quarter{grid-column:span 3}
 .card h3{font-size:1.45rem;letter-spacing:-.025em;margin:8px 0 9px}
+.principle-number{font-weight:900;color:var(--accent);font-size:.8rem;letter-spacing:.08em}
 .card p{color:var(--muted)}
 .card-link{display:inline-flex;margin-top:6px;font-weight:760;text-decoration:none;border-bottom:1px solid var(--ink)}
 .tags{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 12px}
@@ -107,7 +109,7 @@ img{max-width:100%}
 .filter.active{background:var(--ink);color:white;border-color:var(--ink)}
 [data-hidden="true"]{display:none!important}
 @media(max-width:900px){
-  .card.third,.article-card{grid-column:span 6}
+  .card.third,.card.quarter,.article-card{grid-column:span 6}
   .case-layout{grid-template-columns:1fr}
   .sidebar{position:static}
   .stat-grid{grid-template-columns:repeat(2,1fr)}
@@ -116,7 +118,7 @@ img{max-width:100%}
   .shell{width:min(var(--max),calc(100% - 26px))}
   .nav-links a:not(.nav-cta){display:none}
   .hero{padding-top:60px}
-  .card,.card.wide,.card.third,.article-card{grid-column:span 12}
+  .card,.card.wide,.card.third,.card.quarter,.article-card{grid-column:span 12}
   .stat-grid{grid-template-columns:1fr 1fr}
   .metric-row{grid-template-columns:1fr}
   .section-head{align-items:start;flex-direction:column}
