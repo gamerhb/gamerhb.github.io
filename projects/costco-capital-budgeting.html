@@ -33,6 +33,22 @@
 </svg>
 <figcaption><span class="caption-title">Scenario NPV from the final model.</span> The base and upside cases create substantial value; the pessimistic case remains positive, but only narrowly.<span class="source-note">Values from the authoritative August 19 final executive memo and Excel model.</span></figcaption>
 </figure>
+<div class="interactive-lab" data-capital-budget-explorer>
+<div class="lab-kicker">Interactive · final Excel-model outputs</div>
+<h3>Stress the capital-budgeting decision</h3>
+<p class="lab-copy">Switch between the final combined scenarios, then inspect the three largest one-way NPV drivers. Sensitivity points are the tested values from the authoritative August 19 model.</p>
+<div class="lab-controls"><div class="lab-field"><label>Combined scenario</label><div class="segmented"><button type="button" data-cb-scenario="pessimistic">Pessimistic</button><button type="button" class="active" data-cb-scenario="base">Base</button><button type="button" data-cb-scenario="optimistic">Optimistic</button></div></div></div>
+<div class="lab-metrics">
+<div class="lab-metric"><strong data-cb-npv></strong><span>NPV</span></div>
+<div class="lab-metric"><strong data-cb-irr></strong><span>IRR</span></div>
+<div class="lab-metric"><strong>8.18%</strong><span>base WACC</span></div>
+<div class="lab-metric"><strong data-cb-decision></strong><span>model decision</span></div>
+</div>
+<div class="lab-controls"><div class="lab-field"><label for="cb-driver">One-way sensitivity</label><select id="cb-driver" data-cb-driver><option value="revenue">Mature revenue</option><option value="variable">Variable warehouse cost</option><option value="capex">Initial CapEx multiplier</option></select></div></div>
+<h4 data-cb-driver-label></h4>
+<div class="lab-bars" data-cb-bars></div>
+<p class="lab-note">The browser does not interpolate untested assumptions. It shows the low / base / high points actually evaluated in the final model.</p>
+</div>
 <h2>Sensitivity turned the model into a control map</h2><p>The most useful part of the project was identifying what actually drove the result. Mature warehouse revenue was the largest one-way NPV driver, followed by variable warehouse operating cost and the initial CapEx multiplier. Tested two-way combinations remained positive.</p>
 <div class="reasoning-block"><h3>Mature sales mattered more than the headline NPV</h3><p>The final memo’s one-way sensitivity put mature warehouse revenue first: moving mature sales from 80% to 120% of base shifted NPV from roughly <strong>$94.27M to $187.66M</strong>. That reframed the recommendation: site selection, demand validation, and ramp execution were the operating controls that mattered most.</p></div>
 <h2>Financing: avoid solving a liquidity problem that did not exist</h2><p>I supported a 100% internal-financing recommendation by comparing the modeled project with Costco’s FY2025 liquidity and cash generation: $15.284B cash + short-term investments, $13.335B operating cash flow, and about $7.837B simple free cash flow after CapEx.</p>
