@@ -274,3 +274,22 @@ img{max-width:100%}
 @media(max-width:760px){
   .mc-filter-grid{grid-template-columns:1fr}
 }
+
+
+/* Figure 6 numeric values */
+.mc-values{margin:12px 0 4px}
+.mc-value-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mc-value-card{padding:13px 15px;border:1px solid var(--line);border-radius:12px;background:var(--soft)}
+.mc-value-card.median{background:var(--soft2);border-color:#c8dbd3}
+.mc-value-card span{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:760}
+.mc-value-card strong{display:block;margin-top:3px;font-size:1.14rem;letter-spacing:-.025em}
+.mc-values-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+.mc-values-table{width:100%;border-collapse:collapse;font-size:.79rem}
+.mc-values-table th,.mc-values-table td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.mc-values-table th:first-child,.mc-values-table td:first-child{text-align:left}
+.mc-values-table th{background:var(--soft);color:var(--muted);font-size:.69rem;text-transform:uppercase;letter-spacing:.055em}
+.mc-values-table tr:last-child td{border-bottom:0}
+.mc-values-table td strong{color:var(--accent2)}
+@media(max-width:560px){
+  .mc-value-cards{grid-template-columns:1fr}
+}
