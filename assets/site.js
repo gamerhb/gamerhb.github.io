@@ -290,3 +290,76 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   initUniPath();
   initReporting();
 })();
+
+
+/* About portfolio explorer */
+(function(){
+  const root=document.querySelector('[data-work-explorer]');
+  if(!root) return;
+
+  const input=root.querySelector('[data-work-search]');
+  const typeButtons=[...root.querySelectorAll('[data-work-type]')];
+  const items=[...root.querySelectorAll('[data-work-item]')];
+  const status=root.querySelector('[data-work-status]');
+  const clear=root.querySelector('[data-work-clear]');
+  const empty=root.querySelector('[data-work-empty]');
+  const capabilityButtons=[...document.querySelectorAll('[data-capability-trigger]')];
+
+  let activeType='all';
+  let activeCapability='';
+
+  const normal=s=>(s||'').toLowerCase().trim();
+
+  function render(){
+    const q=normal(input.value);
+    let visible=0;
+    items.forEach(item=>{
+      const type=item.dataset.type;
+      const tags=normal(item.dataset.tags).split('|').map(x=>x.trim()).filter(Boolean);
+      const haystack=normal(item.textContent+' '+item.dataset.tags);
+      const matchType=activeType==='all'||type===activeType;
+      const matchCapability=!activeCapability||tags.includes(activeCapability);
+      const matchSearch=!q||haystack.includes(q);
+      const show=matchType&&matchCapability&&matchSearch;
+      item.dataset.hidden=show?'false':'true';
+      if(show) visible++;
+    });
+
+    typeButtons.forEach(b=>b.classList.toggle('active',b.dataset.workType===activeType));
+    capabilityButtons.forEach(b=>b.classList.toggle('active',normal(b.dataset.capabilityTrigger)===activeCapability));
+
+    const parts=[];
+    if(activeCapability) parts.push('capability: '+capabilityButtons.find(b=>normal(b.dataset.capabilityTrigger)===activeCapability)?.textContent.trim());
+    if(activeType!=='all') parts.push(activeType);
+    if(q) parts.push('search: “'+input.value.trim()+'”');
+    status.textContent=(parts.length?'Showing '+visible+' match'+(visible===1?'':'es')+' for '+parts.join(' · '):'Showing all '+visible+' indexed items');
+    clear.hidden=!(activeCapability||activeType!=='all'||q);
+    empty.hidden=visible!==0;
+  }
+
+  typeButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    activeType=btn.dataset.workType;
+    render();
+  }));
+
+  input.addEventListener('input',render);
+
+  clear.addEventListener('click',()=>{
+    activeType='all';
+    activeCapability='';
+    input.value='';
+    render();
+    input.focus();
+  });
+
+  capabilityButtons.forEach(btn=>btn.addEventListener('click',()=>{
+    const value=normal(btn.dataset.capabilityTrigger);
+    activeCapability=activeCapability===value?'':value;
+    activeType='all';
+    input.value='';
+    render();
+    root.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+
+  render();
+})();
