@@ -1,0 +1,18 @@
+{
+  "pages": 30,
+  "responsiveScans": 150,
+  "widths": [
+    1440,
+    1024,
+    768,
+    390,
+    320
+  ],
+  "internalTargets": 228,
+  "monteCarloFilterStates": 20,
+  "preserved": "All original HTML text, numerical constants, PDFs and resume generator",
+  "errors": [],
+  "overflow": [],
+  "baseline": "c0035a7eeefc7e02ccea796640980968fbd5cba1",
+  "branch": "portfolio/astra-polish-review-2026-09-30"
+}
