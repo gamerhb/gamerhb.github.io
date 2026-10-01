@@ -192,24 +192,26 @@ img{max-width:100%}
 .lab-metric{background:var(--soft);border:1px solid transparent;border-radius:12px;padding:12px;min-width:0}
 .lab-metric strong{display:block;font-size:1.18rem;letter-spacing:-.03em;overflow-wrap:anywhere}
 .lab-metric span{display:block;color:var(--muted);font-size:.75rem;margin-top:3px}
-.range-viz{margin:18px 0 8px}
-.range-track{position:relative;height:18px;border-radius:999px;background:linear-gradient(90deg,#f4e4da 0 29%,#eee8dd 29% 42%,#e5eee9 42% 100%);border:1px solid var(--line)}
+.range-viz{position:relative;margin:18px 0 8px}
+.range-track{position:relative;height:18px;border-radius:999px;background:linear-gradient(90deg,#f4e4da 0 29%,#eee8dd 29% 42%,#e5eee9 42% 100%);border:1px solid var(--line);z-index:2}
 .range-track .zero-line{position:absolute;top:-6px;bottom:-6px;width:2px;background:#8c8f89;opacity:.85}
 .range-track .range-line{position:absolute;height:6px;top:5px;border-radius:999px;background:var(--accent2)}
 .range-track .range-dot{position:absolute;top:1px;width:14px;height:14px;border-radius:50%;background:var(--accent);border:2px solid var(--paper);box-shadow:0 0 0 1px var(--accent)}
-.range-labels{position:relative;height:78px;font-size:.73rem;color:var(--muted)}
+.range-labels{position:relative;height:46px;font-size:.73rem;color:var(--muted);z-index:3}
 .range-labels span{
   position:absolute;
+  top:12px;
   transform:translateX(-50%);
   white-space:nowrap;
   line-height:1.2;
-  padding:2px 6px;
+  padding:3px 6px;
   border-radius:6px;
-  background:rgba(255,253,248,.88);
+  background:rgba(255,253,248,.94);
+  transition:left .18s ease;
 }
-.range-labels span:nth-child(1){top:5px}
-.range-labels span:nth-child(2){top:29px;color:var(--ink);font-weight:760}
-.range-labels span:nth-child(3){top:53px}
+.range-labels span:nth-child(2){color:var(--ink);font-weight:760}
+.range-leaders{position:absolute;left:0;top:10px;width:100%;height:44px;overflow:visible;pointer-events:none;z-index:1}
+.range-leaders .range-leader{fill:none;stroke:#61635f;stroke-width:1.15;stroke-linecap:round;transition:opacity .15s ease}
 .lab-bars{display:grid;gap:10px;margin-top:14px}
 .lab-bar-row{display:grid;grid-template-columns:minmax(90px,145px) 1fr auto;gap:10px;align-items:center;font-size:.86rem}
 .lab-bar-track{height:10px;background:var(--soft);border-radius:999px;overflow:hidden}

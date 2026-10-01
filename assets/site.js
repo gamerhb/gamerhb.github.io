@@ -63,14 +63,63 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
       const line=range.querySelector('.range-line');
       const dot=range.querySelector('.range-dot');
       const zero=range.querySelector('.zero-line');
-      const labels=range.querySelectorAll('.range-labels span');
+      const labels=[...range.querySelectorAll('.range-labels span')];
       const p10=scale(d[0]),med=scale(d[1]),p90=scale(d[2]);
       line.style.left=p10+'%'; line.style.width=Math.max(1,p90-p10)+'%';
       dot.style.left='calc('+med+'% - 7px)';
       zero.style.left=scale(0)+'%';
-      labels[0].style.left=p10+'%'; labels[0].textContent='P10 '+moneyM(d[0]);
-      labels[1].style.left=med+'%'; labels[1].textContent='Median '+moneyM(d[1]);
-      labels[2].style.left=p90+'%'; labels[2].textContent='P90 '+moneyM(d[2]);
+      labels[0].textContent='P10 '+moneyM(d[0]);
+      labels[1].textContent='Median '+moneyM(d[1]);
+      labels[2].textContent='P90 '+moneyM(d[2]);
+
+      const labelRow=range.querySelector('.range-labels');
+      let leaders=range.querySelector('.range-leaders');
+      if(!leaders){
+        leaders=document.createElementNS('http://www.w3.org/2000/svg','svg');
+        leaders.setAttribute('class','range-leaders');
+        leaders.setAttribute('aria-hidden','true');
+        leaders.innerHTML='<defs><marker id="range-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#61635f"></path></marker></defs><path class="range-leader" marker-end="url(#range-arrow)"></path><path class="range-leader" marker-end="url(#range-arrow)"></path><path class="range-leader" marker-end="url(#range-arrow)"></path>';
+        range.appendChild(leaders);
+      }
+      requestAnimationFrame(()=>{
+        const width=labelRow.clientWidth;
+        if(!width) return;
+        const anchors=[p10,med,p90].map(v=>v/100*width);
+        const widths=labels.map(el=>el.offsetWidth);
+        const edge=10;
+        const gap=12;
+        let centers=anchors.map((x,i)=>Math.max(edge+widths[i]/2,Math.min(width-edge-widths[i]/2,x)));
+
+        for(let pass=0;pass<3;pass++){
+          for(let i=1;i<centers.length;i++){
+            const minimum=centers[i-1]+widths[i-1]/2+gap+widths[i]/2;
+            if(centers[i]<minimum) centers[i]=minimum;
+          }
+          const rightLimit=width-edge-widths[2]/2;
+          if(centers[2]>rightLimit){
+            const shift=centers[2]-rightLimit;
+            centers=centers.map(x=>x-shift);
+          }
+          for(let i=centers.length-2;i>=0;i--){
+            const maximum=centers[i+1]-widths[i+1]/2-gap-widths[i]/2;
+            if(centers[i]>maximum) centers[i]=maximum;
+          }
+          const leftLimit=edge+widths[0]/2;
+          if(centers[0]<leftLimit){
+            const shift=leftLimit-centers[0];
+            centers=centers.map(x=>x+shift);
+          }
+        }
+
+        labels.forEach((label,i)=>{label.style.left=centers[i]+'px';});
+        leaders.setAttribute('viewBox','0 0 '+width+' 44');
+        [...leaders.querySelectorAll('.range-leader')].forEach((path,i)=>{
+          const displaced=Math.abs(centers[i]-anchors[i])>6;
+          path.style.opacity=displaced?'1':'0';
+          const mid=(centers[i]+anchors[i])/2;
+          path.setAttribute('d','M '+centers[i]+' 38 Q '+mid+' 24 '+anchors[i]+' 6');
+        });
+      });
       strategyBtns.forEach(b=>b.classList.toggle('active',b.dataset.mcStrategy===strategy));
       const note=root.querySelector('[data-mc-interpretation]');
       if(note){
