@@ -3,7 +3,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="A 15-year Monte Carlo international-expansion decision framework integrating country risk, dependence, financing, rollout strategy, and valuation.">
 <meta name="author" content="Atharva Barad"><title>Modeling International Expansion Under Uncertainty — Atharva Barad</title>
-<link rel="stylesheet" href="../assets/style.css?v=mc-smart-labels-20260930">
+<link rel="stylesheet" href="../assets/style.css?v=mc-figure6-filtered-20260930">
 </head><body>
 <header class="site-header"><div class="shell nav">
 <a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
@@ -50,30 +50,37 @@
 
 <div class="interactive-lab" data-monte-carlo-explorer>
 <div class="lab-kicker">Interactive · frozen V5 output</div>
-<h3>Explore the 12 Monte Carlo configurations</h3>
-<p class="lab-copy">Choose an income-group reference class and rollout policy. These are the actual reported 10,000-path results from the final model—not a simplified re-simulation in the browser.</p>
-<div class="lab-controls">
-<div class="lab-field"><label for="mc-income">Reference class</label><select id="mc-income" data-mc-income><option>Low</option><option>Lower-middle</option><option>Upper-middle</option><option selected>High</option></select></div>
-<div class="lab-field"><label>Rollout / financing policy</label><div class="segmented"><button type="button" data-mc-strategy="Aggressive">Aggressive</button><button type="button" class="active" data-mc-strategy="Moderate">Moderate</button><button type="button" data-mc-strategy="Organic">Organic</button></div></div>
+<h3>Figure 6 — Median NPV and P10–P90 range</h3>
+<p class="lab-copy">This keeps the same visual logic as Figure 6 in the final paper: each configuration is a vertical P10–P90 range with its median marked inside it. Use the two filters to isolate any rollout policy, income-group reference class, or exact combination.</p>
+
+<div class="mc-filter-grid">
+  <div class="lab-field">
+    <label>Income-group reference class</label>
+    <div class="segmented mc-filter-buttons">
+      <button type="button" class="active" data-mc-income-filter="All">All</button>
+      <button type="button" data-mc-income-filter="Low">Low</button>
+      <button type="button" data-mc-income-filter="Lower-middle">Lower-middle</button>
+      <button type="button" data-mc-income-filter="Upper-middle">Upper-middle</button>
+      <button type="button" data-mc-income-filter="High">High</button>
+    </div>
+  </div>
+  <div class="lab-field">
+    <label>Rollout / financing policy</label>
+    <div class="segmented mc-filter-buttons">
+      <button type="button" class="active" data-mc-strategy-filter="All">All</button>
+      <button type="button" data-mc-strategy-filter="Aggressive">Aggressive</button>
+      <button type="button" data-mc-strategy-filter="Moderate">Moderate</button>
+      <button type="button" data-mc-strategy-filter="Organic">Organic</button>
+    </div>
+  </div>
 </div>
-<div class="lab-metrics">
-<div class="lab-metric"><strong data-mc-median></strong><span>median NPV</span></div>
-<div class="lab-metric"><strong data-mc-positive></strong><span>P(NPV &gt; 0)</span></div>
-<div class="lab-metric"><strong data-mc-strict></strong><span>strict full-project success</span></div>
-<div class="lab-metric"><strong data-mc-complete></strong><span>P(6/6 warehouses by Y15)</span></div>
+
+<div class="mc-figure6-wrap">
+  <svg data-mc-figure6 role="img" aria-label="Median NPV with P10 to P90 range for the filtered Monte Carlo country-strategy configurations"></svg>
 </div>
-<div class="range-viz" data-mc-range>
-<div class="range-track"><div class="zero-line"></div><div class="range-line"></div><div class="range-dot" aria-hidden="true"></div></div>
-<div class="range-labels"><span></span><span></span><span></span></div>
-</div>
-<div class="lab-metrics">
-<div class="lab-metric"><strong data-mc-irr></strong><span>median IRR</span></div>
-<div class="lab-metric"><strong data-mc-wacc></strong><span>median effective WACC</span></div>
-<div class="lab-metric"><strong data-mc-moic></strong><span>median MOIC</span></div>
-<div class="lab-metric"><strong data-mc-sponsor></strong><span>median sponsor / external capital</span></div>
-</div>
-<p class="lab-copy" data-mc-interpretation aria-live="polite"></p>
-<p class="lab-note">P10–P90 are simulation percentiles, not confidence intervals. The explorer reproduces Appendix D / Section 7 outputs; it does not generate new paths.</p>
+<p class="lab-note">Monetary values are millions of U.S. dollars. P10–P90 intervals are simulation percentiles, not confidence intervals. Values reproduce the frozen V5 outputs reported in Figure 6 and Appendix D.</p>
+
+<div class="mc-analysis" data-mc-analysis aria-live="polite"></div>
 </div>
 <h2>What the model found</h2>
 <table class="result-table"><thead><tr><th>Reference class</th><th>Value pattern</th><th>Strict full-project success</th></tr></thead><tbody>
@@ -115,4 +122,4 @@
 
 <footer class="footer"><div class="shell footer-grid">
 <div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
-</div></footer><script src="../assets/site.js?v=mc-smart-labels-20260930"></script></body></html>
+</div></footer><script src="../assets/site.js?v=mc-figure6-filtered-20260930"></script></body></html>
