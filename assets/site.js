@@ -1,4 +1,14 @@
 
+/* Resume hub routing */
+(function(){
+  if(document.body && document.body.dataset.resumePage==="true") return;
+  const parts=window.location.pathname.split('/').filter(Boolean);
+  const prefix=parts.length>1?'../':'./';
+  document.querySelectorAll('a[href$="Atharva_Barad_Resume.pdf"]').forEach(a=>{
+    a.href=prefix+'resume.html';
+  });
+})();
+
 document.querySelectorAll('[data-filter]').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));
