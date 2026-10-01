@@ -321,3 +321,48 @@ img{max-width:100%}
 .evidence-links a:hover{transform:translateY(-1px);border-color:#bdb6aa;background:var(--soft2)}
 @media(max-width:1000px){.role-resume-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.role-resume-grid,.evidence-band{grid-template-columns:1fr}}
+
+
+/* Resume page final polish */
+.resume-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+  margin-top:auto;
+  padding-top:18px;
+}
+.resume-actions .artifact-link{
+  justify-content:center;
+  min-height:46px;
+  padding:10px 12px;
+}
+.artifact-link,
+.btn{
+  position:relative;
+  will-change:transform;
+}
+@media(hover:hover) and (pointer:fine){
+  .artifact-link:hover{
+    transform:translateY(-3px);
+    border-color:#aaa397;
+    box-shadow:0 10px 22px rgba(20,24,20,.10);
+  }
+  .artifact-link.primary:hover{
+    transform:translateY(-3px);
+    background:#1d4942;
+    border-color:#1d4942;
+    box-shadow:0 12px 24px rgba(23,59,53,.20),inset 4px 0 0 var(--accent);
+  }
+  .btn:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 24px rgba(23,59,53,.18);
+  }
+}
+.artifact-link:active,.btn:active{
+  transform:translateY(0);
+  box-shadow:none;
+}
+.resume-closing .artifact-bar{margin-bottom:0}
+@media(max-width:520px){
+  .resume-actions{grid-template-columns:1fr}
+}
