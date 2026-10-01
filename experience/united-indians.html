@@ -3,13 +3,14 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="description" content="United Indians operations case study: workflow redesign, grant budgeting, compliance reporting, intern management, and communication lessons.">
 <meta name="author" content="Atharva Barad"><title>United Indians: Operations, Grants & Process Redesign — Atharva Barad</title>
-<link rel="stylesheet" href="../assets/style.css?v=global-search-20261001">
-</head><body>
+<link rel="stylesheet" href="../assets/style.css?v=astra-polish-20260930">
+</head><body data-section="experience" data-detail="true">
+<a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header"><div class="shell nav">
-<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links"><a class="" href="../about.html">About</a><a class="" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../Atharva_Barad_Resume.pdf">Resume</a></nav>
+<a class="brand" href="../index.html">ATHARVA BARAD</a><nav class="nav-links" aria-label="Main navigation"><a class="" href="../about.html">About</a><a class="active" aria-current="location" href="../experience.html">Experience</a><a class="" href="../projects.html">Projects</a><a class="" href="../articles.html">Articles</a><a class="nav-cta" href="../resume.html">Resume</a></nav>
 </div></header>
 
-<main><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../experience.html">Experience</a> / United Indians</div>
+<main id="main-content" tabindex="-1"><section class="page-hero"><div class="shell"><div class="breadcrumb"><a href="../experience.html">Experience</a> / United Indians</div>
 <div class="eyebrow">Professional experience · Nov 2023–Nov 2025</div><h1>United Indians: Operations, Grants & <span class="accent">Process Redesign.</span></h1><p class="lead">A community-operations role that grew into workflow redesign, grant budgeting and compliance, intern management, and a practical lesson in making work visible.</p></div></section>
 <section class="section"><div class="shell"><div class="case-layout">
 <div class="prose">
@@ -17,21 +18,48 @@
 <h2>Turning volunteer reporting into a usable operating system</h2><p>The existing volunteer reporting process was paper-heavy and slow. A full quarterly report typically took roughly 4–8 hours, often one to two shifts. I moved the workflow online and rebuilt it around required fields, validation/error flags, correction paths, Excel consolidation, and reusable reporting logic.</p>
 <div class="callout"><strong>Result:</strong> the full quarterly process fell to about 40 minutes, with refresh/consolidation typically around 10–15 minutes.</div>
 <p>The important lesson was that digitization alone would not have solved the problem. The biggest gains came from removing re-entry, surfacing errors earlier, and making corrections easier.</p>
-<div class="interactive-lab" data-reporting-demo>
+<div class="interactive-lab reporting-lab" data-reporting-demo>
 <div class="lab-kicker">Interactive · workflow redesign</div>
-<h3>Follow a volunteer record through the reporting system</h3>
-<p class="lab-copy">The improvement was not just “paper → form.” Try a clean submission, an exception, or the fallback path to see where validation and correction happen before quarterly reporting.</p>
-<div class="segmented"><button type="button" class="active" data-report-mode="complete">Complete form</button><button type="button" data-report-mode="missing">Missing time-out</button><button type="button" data-report-mode="fallback">Text-message fallback</button></div>
-<div class="demo-record" data-report-record></div>
-<div class="lab-status" data-report-status aria-live="polite"></div>
-<div class="flow-demo">
-<div class="flow-step"><div class="step-num">1</div><div><strong>Capture</strong><span>Date, time, task, description, and evidence enter one structured record.</span></div></div>
-<div class="flow-step"><div class="step-num">2</div><div><strong>Validate / correct</strong><span>Required-field checks and exception follow-up happen before the quarter-end report.</span></div></div>
-<div class="flow-step"><div class="step-num">3</div><div><strong>Consolidate</strong><span>Excel / Power Query / formulas reuse the same records instead of re-keying them.</span></div></div>
-<div class="flow-step"><div class="step-num">4</div><div><strong>Report + analyze</strong><span>Volunteer hours, activities, seasonal patterns, and grant evidence become filterable outputs.</span></div></div>
+<div class="reporting-lab-head">
+<div><h3>Compare where the work happens</h3><p class="lab-copy">Choose a record condition and follow it through the old paper-heavy process versus the redesigned system. The key change was not the form itself—it was moving validation and correction earlier, then reusing one structured dataset downstream.</p></div>
+<div class="reporting-time-card"><span>Observed quarterly cycle</span><strong>4–8h → ~40m</strong><small>Clean refresh / consolidation: ~10–15m</small></div>
 </div>
-<div class="lab-metrics"><div class="lab-metric"><strong>4–8h</strong><span>old quarterly process</span></div><div class="lab-metric"><strong>~40m</strong><span>full redesigned quarterly process</span></div><div class="lab-metric"><strong>10–15m</strong><span>clean refresh / consolidation</span></div><div class="lab-metric"><strong>1 dataset</strong><span>reporting + operational analysis</span></div></div>
-<p class="lab-note">Example records are illustrative; the workflow stages and timing come from the operating process I built and used.</p>
+
+<div class="reporting-scenario">
+<span class="control-label">Record condition</span>
+<div class="segmented">
+<button type="button" class="active" data-report-mode="complete">Complete form</button>
+<button type="button" data-report-mode="missing">Missing time-out</button>
+<button type="button" data-report-mode="fallback">Text-message fallback</button>
+</div>
+</div>
+
+<div class="report-record-wrap">
+<div class="report-record-label">Illustrative record</div>
+<div class="demo-record" data-report-record></div>
+</div>
+
+<div class="report-compare-grid">
+<section class="report-process old">
+<div class="report-process-head"><span>Before</span><h4>Paper-heavy workflow</h4><p>Errors and fragmented evidence survive longer, so more work accumulates at quarter-end.</p></div>
+<div class="report-path" data-report-original></div>
+</section>
+<section class="report-process redesigned">
+<div class="report-process-head"><span>Redesigned</span><h4>Controlled reporting system</h4><p>Capture, validation, correction, and reuse happen as one connected operating flow.</p></div>
+<div class="report-path" data-report-redesigned></div>
+</section>
+</div>
+
+<div class="reporting-delta-grid">
+<div><span>Error / exception becomes visible</span><strong data-report-old-detect>Quarter-end review</strong><small>Old workflow</small></div>
+<div><span>Error / exception becomes visible</span><strong data-report-new-detect>At capture / validation</strong><small>Redesigned workflow</small></div>
+<div><span>Quarterly process</span><strong>4–8 hours → ~40 minutes</strong><small>Observed operating result</small></div>
+<div><span>Downstream reuse</span><strong>One structured dataset</strong><small>Reporting + operational analysis</small></div>
+</div>
+
+<div class="reporting-insight"><span>What changed</span><p data-report-insight></p></div>
+<div class="lab-status" data-report-status aria-live="polite"></div>
+<p class="lab-note">Example records are illustrative. The workflow stages, controls, fallback design, and timing reflect the process I built and used.</p>
 </div>
 <h2>Grant ownership under real budget constraints</h2><p>I developed the proposal and budget for an awarded $73,000 King County WaterWorks grant, with a manager formally approving/submitting it. I tracked spending, coordinated purchases with accounting/management, and completed eight quarterly compliance reports across overlapping grant cycles.</p>
 <h2>From ad hoc mentoring to a repeatable internship program</h2><p>I designed, onboarded, and managed an eight-person contracted intern workforce through a six-week horticulture and water-systems program. That included scheduling, expectations, structured learning plans, weekly check-ins, individualized feedback, performance tracking, and day-to-day supervision.</p>
@@ -55,4 +83,4 @@
 
 <footer class="footer"><div class="shell footer-grid">
 <div>© 2026 Atharva Barad</div><div>King County, Washington · <a href="mailto:atharvambarad@gmail.com">Email</a> · <a href="https://www.linkedin.com/in/atharvambarad">LinkedIn</a> · <a href="https://github.com/gamerhb">GitHub</a></div>
-</div></footer><script src="../assets/site.js?v=global-search-20261001"></script></body></html>
+</div></footer><script src="../assets/site.js?v=astra-polish-20260930"></script></body></html>

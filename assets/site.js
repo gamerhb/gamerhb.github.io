@@ -9,10 +9,101 @@
   });
 })();
 
+/* Progressive navigation and reading tools. Content remains available without JS. */
+(function(){
+  const nav=document.querySelector('.nav-links');
+  if(nav){
+    const pages=document.createElement('div');
+    pages.className='nav-pages';
+    pages.id='navigation-pages';
+    nav.querySelectorAll('a:not(.nav-cta)').forEach(link=>pages.appendChild(link));
+    nav.prepend(pages);
+    const toggle=document.createElement('button');
+    toggle.type='button';
+    toggle.className='nav-toggle';
+    toggle.textContent='Menu';
+    toggle.setAttribute('aria-controls',pages.id);
+    toggle.setAttribute('aria-expanded','false');
+    nav.insertBefore(toggle,pages);
+    nav.classList.add('is-enhanced');
+    function closeMenu(restoreFocus=false){
+      nav.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded','false');
+      if(restoreFocus) toggle.focus();
+    }
+    toggle.addEventListener('click',()=>{
+      const open=toggle.getAttribute('aria-expanded')!=='true';
+      if(open && window.portfolioSearch) window.portfolioSearch.close();
+      nav.classList.toggle('is-open',open);
+      toggle.setAttribute('aria-expanded',String(open));
+    });
+    document.addEventListener('click',event=>{if(!nav.contains(event.target)) closeMenu();});
+    document.addEventListener('keydown',event=>{
+      if(event.key==='Escape' && nav.classList.contains('is-open')) closeMenu(true);
+    });
+    nav.addEventListener('focusout',()=>{
+      requestAnimationFrame(()=>{if(!nav.contains(document.activeElement)) closeMenu();});
+    });
+    document.addEventListener('portfolio:search-open',()=>closeMenu());
+    matchMedia('(min-width: 781px)').addEventListener('change',()=>closeMenu());
+  }
+
+  const prose=document.querySelector('.case-layout .prose');
+  if(prose){
+    const headings=[...prose.querySelectorAll('h2')];
+    if(headings.length>=4){
+      const index=document.createElement('details');
+      index.className='section-index';
+      const summary=document.createElement('summary');
+      summary.textContent='On this page';
+      const count=document.createElement('span');
+      count.textContent=headings.length+' sections';
+      summary.appendChild(count);
+      const links=document.createElement('nav');
+      links.setAttribute('aria-label','On this page');
+      headings.forEach((heading,i)=>{
+        if(!heading.id) heading.id='section-'+(i+1)+'-'+heading.textContent.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/-$/,'');
+        const link=document.createElement('a');
+        link.href='#'+heading.id;
+        link.textContent=heading.textContent;
+        links.appendChild(link);
+      });
+      index.append(summary,links);
+      prose.prepend(index);
+    }
+    prose.querySelectorAll('.result-table').forEach(table=>{
+      const wrap=document.createElement('div');
+      wrap.className='table-scroll';
+      wrap.tabIndex=0;
+      wrap.setAttribute('role','region');
+      wrap.setAttribute('aria-label','Scrollable results table');
+      table.before(wrap);
+      wrap.appendChild(table);
+    });
+  }
+  document.querySelectorAll('.evidence-figure > svg').forEach(svg=>{
+    const viewport=document.createElement('div');
+    viewport.className='figure-scroll';
+    viewport.tabIndex=0;
+    viewport.setAttribute('role','region');
+    viewport.setAttribute('aria-label','Scrollable figure: '+(svg.getAttribute('aria-label')||'project evidence'));
+    svg.before(viewport);
+    viewport.appendChild(svg);
+  });
+  document.querySelectorAll('.resume-choice').forEach(card=>{
+    const name=card.querySelector('.resume-meta').textContent.split(' · ')[0];
+    card.querySelectorAll('.resume-actions a').forEach(link=>{
+      link.setAttribute('aria-label',(link.hasAttribute('download')?'Download ':'Open ')+name+' PDF');
+    });
+  });
+})();
+
 document.querySelectorAll('[data-filter]').forEach(btn=>{
+  btn.setAttribute('aria-pressed',String(btn.classList.contains('active')));
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('[data-filter]').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('[data-filter]').forEach(x=>{x.classList.remove('active');x.setAttribute('aria-pressed','false');});
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed','true');
     const v=btn.dataset.filter;
     document.querySelectorAll('[data-kind]').forEach(card=>{
       card.dataset.hidden=(v!=='all' && !card.dataset.kind.split(' ').includes(v))?'true':'false';
@@ -65,7 +156,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
 
     function renderChart(filtered){
       const W=980,H=520;
-      const left=78,right=944,top=38,bottom=338;
+      const left=78,right=818,top=38,bottom=338;
       const yMin=-400,yMax=900;
       const ticks=[-400,-200,0,200,400,600,800];
       const y=v=>top+(yMax-v)/(yMax-yMin)*(bottom-top);
@@ -119,7 +210,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
       }
 
       wrap.innerHTML=
-        '<div class="mc-values-table-wrap"><table class="mc-values-table">'+
+        '<div class="mc-values-table-wrap" tabindex="0" role="region" aria-label="Scrollable Monte Carlo values"><table class="mc-values-table">'+
           '<thead><tr><th>Configuration</th><th>P10</th><th>Median</th><th>P90</th></tr></thead>'+
           '<tbody>'+filtered.map(d=>
             '<tr><td>'+esc(d.income)+' · '+esc(d.strategy)+'</td><td>'+moneyM(d.p10)+'</td><td><strong>'+moneyM(d.median)+'</strong></td><td>'+moneyM(d.p90)+'</td></tr>'
@@ -158,8 +249,8 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
       renderChart(filtered);
       renderValues(filtered);
       renderAnalysis(filtered);
-      incomeButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcIncomeFilter===income));
-      strategyButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcStrategyFilter===strategy));
+      incomeButtons.forEach(b=>{const active=b.dataset.mcIncomeFilter===income;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+      strategyButtons.forEach(b=>{const active=b.dataset.mcStrategyFilter===strategy;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
     }
 
     incomeButtons.forEach(b=>b.addEventListener('click',()=>{income=b.dataset.mcIncomeFilter;render();}));
@@ -187,7 +278,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
       root.querySelector('[data-cb-npv]').textContent=moneyM(s.npv);
       root.querySelector('[data-cb-irr]').textContent=pct(s.irr);
       root.querySelector('[data-cb-decision]').textContent=s.label;
-      buttons.forEach(b=>b.classList.toggle('active',b.dataset.cbScenario===key));
+      buttons.forEach(b=>{const active=b.dataset.cbScenario===key;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
     }
     function renderSensitivity(){
       const s=sensitivities[driver.value];
@@ -204,31 +295,86 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   function initCountryWeights(){
     const root=document.querySelector('[data-country-weight-explorer]');
     if(!root) return;
-    const avg={
-      'Singapore':{b:7.4,c:7.6666667,r:7.5},
-      'South Korea':{b:5.2,c:7.8333333,r:6.5},
-      'Japan':{b:3.4,c:7.3333333,r:7.25}
-    };
-    const b=root.querySelector('[data-weight-benefits]');
-    const c=root.querySelector('[data-weight-costs]');
-    const r=root.querySelector('[data-weight-risks]');
-    const total=root.querySelector('[data-weight-total]');
+    const countries=['Singapore','South Korea','Japan'];
+    const criteria=[
+      {id:'income',group:'Benefits',base:20,ratings:{'Singapore':9,'South Korea':5,'Japan':4}},
+      {id:'growth',group:'Benefits',base:20,ratings:{'Singapore':8,'South Korea':5,'Japan':1}},
+      {id:'vehicles',group:'Benefits',base:10,ratings:{'Singapore':3,'South Korea':6,'Japan':7}},
+      {id:'corruption',group:'Costs',base:5,ratings:{'Singapore':9,'South Korea':6,'Japan':7}},
+      {id:'infrastructure',group:'Costs',base:5,ratings:{'Singapore':9,'South Korea':8,'Japan':8}},
+      {id:'legal',group:'Costs',base:10,ratings:{'Singapore':9,'South Korea':9,'Japan':8}},
+      {id:'labor',group:'Costs',base:5,ratings:{'Singapore':6,'South Korea':6,'Japan':5}},
+      {id:'property',group:'Costs',base:5,ratings:{'Singapore':4,'South Korea':9,'Japan':8}},
+      {id:'unrest',group:'Risks',base:5,ratings:{'Singapore':7,'South Korea':6,'Japan':8}},
+      {id:'inflation',group:'Risks',base:5,ratings:{'Singapore':8,'South Korea':7,'Japan':9}},
+      {id:'rights',group:'Risks',base:5,ratings:{'Singapore':9,'South Korea':8,'Japan':9}},
+      {id:'aging',group:'Risks',base:5,ratings:{'Singapore':6,'South Korea':5,'Japan':3}}
+    ];
+    const sliders=[...root.querySelectorAll('[data-criterion-weight]')];
     const results=root.querySelector('[data-weight-results]');
-    function render(){
-      let bv=+b.value,cv=+c.value,rv=+r.value;
-      const sum=bv+cv+rv;
-      total.textContent=sum+'%';
-      root.querySelector('[data-out-benefits]').textContent=bv+'%';
-      root.querySelector('[data-out-costs]').textContent=cv+'%';
-      root.querySelector('[data-out-risks]').textContent=rv+'%';
-      const normalized=sum>0?{b:bv/sum,c:cv/sum,r:rv/sum}:{b:0,c:0,r:0};
-      const rows=Object.entries(avg).map(([name,a])=>({name,score:a.b*normalized.b+a.c*normalized.c+a.r*normalized.r})).sort((x,y)=>y.score-x.score);
-      const maxScore=10;
-      results.innerHTML=rows.map((x,i)=>'<div class="rank-row"><span class="rank-pos">'+(i+1)+'</span><span class="rank-name">'+x.name+'</span><div class="lab-bar-track"><div class="lab-bar-fill" style="width:'+x.score/maxScore*100+'%"></div></div><strong>'+x.score.toFixed(2)+'</strong></div>').join('');
-      root.querySelector('[data-weight-status]').textContent=sum===100?'Weights sum to 100%. Scores reproduce the original framework when set to 50 / 30 / 20.':'Weights currently sum to '+sum+'%. The explorer normalizes them proportionally for comparison.';
+    const total=root.querySelector('[data-weight-total]');
+    const status=root.querySelector('[data-weight-status]');
+    const original=Object.fromEntries(criteria.map(c=>[c.id,c.base]));
+
+    function readWeights(){
+      return Object.fromEntries(sliders.map(input=>[input.dataset.criterionWeight,Math.max(0,+input.value||0)]));
     }
-    [b,c,r].forEach(x=>x.addEventListener('input',render));
-    root.querySelector('[data-weight-reset]').addEventListener('click',()=>{b.value=50;c.value=30;r.value=20;render();});
+    function baseScore(country){
+      return criteria.reduce((sum,c)=>sum+c.ratings[country]*(c.base/100),0);
+    }
+    function render(){
+      const raw=readWeights();
+      const rawTotal=criteria.reduce((sum,c)=>sum+raw[c.id],0);
+      const norm=Object.fromEntries(criteria.map(c=>[c.id,rawTotal>0?raw[c.id]/rawTotal*100:0]));
+      total.textContent=rawTotal.toFixed(rawTotal%1?1:0)+'%';
+      const groups={Benefits:0,Costs:0,Risks:0};
+      criteria.forEach(c=>{
+        const out=root.querySelector('[data-criterion-output="'+c.id+'"]');
+        if(out) out.textContent=raw[c.id].toFixed(raw[c.id]%1?1:0)+'%';
+        groups[c.group]+=norm[c.id];
+      });
+      Object.entries(groups).forEach(([g,v])=>{
+        const out=root.querySelector('[data-group-total="'+g+'"]');
+        if(out) out.textContent=v.toFixed(1)+'%';
+      });
+
+      const rows=countries.map(country=>{
+        const byGroup={Benefits:0,Costs:0,Risks:0};
+        let score=0;
+        criteria.forEach(c=>{
+          const contribution=c.ratings[country]*(norm[c.id]/100);
+          score+=contribution;
+          byGroup[c.group]+=contribution;
+        });
+        return {country,score,delta:score-baseScore(country),byGroup};
+      }).sort((x,y)=>y.score-x.score);
+
+      results.innerHTML=rows.map((row,i)=>{
+        const delta=Math.abs(row.delta)<.005?'0.00':(row.delta>0?'+':'')+row.delta.toFixed(2);
+        return '<div class="country-score-card">'+
+          '<div class="country-score-rank"><span>'+(i+1)+'</span><div><strong>'+row.country+'</strong><small>Δ vs original '+delta+'</small></div><b>'+row.score.toFixed(2)+'</b></div>'+
+          '<div class="country-score-bar"><span style="width:'+Math.max(0,Math.min(100,row.score*10))+'%"></span></div>'+
+          '<div class="country-score-breakdown"><span>Benefits <strong>'+row.byGroup.Benefits.toFixed(2)+'</strong></span><span>Costs <strong>'+row.byGroup.Costs.toFixed(2)+'</strong></span><span>Risks <strong>'+row.byGroup.Risks.toFixed(2)+'</strong></span></div>'+
+        '</div>';
+      }).join('');
+
+      const isOriginal=criteria.every(c=>Math.abs(raw[c.id]-original[c.id])<.001);
+      if(isOriginal){
+        status.innerHTML='<strong>Original submitted weights.</strong> This reproduces Singapore 7.50, South Korea 6.25, and Japan 5.35.';
+      }else if(rawTotal===0){
+        status.innerHTML='<strong>No active weight.</strong> Raise at least one criterion to calculate a comparison.';
+      }else{
+        status.innerHTML='<strong>'+rows[0].country+' leads at '+rows[0].score.toFixed(2)+'.</strong> Your inputs sum to '+rawTotal.toFixed(1)+'%; the explorer normalizes them proportionally to 100% before recalculating the country scores.';
+      }
+    }
+    sliders.forEach(input=>input.addEventListener('input',render));
+    root.querySelector('[data-weight-reset]').addEventListener('click',()=>{
+      criteria.forEach(c=>{
+        const input=root.querySelector('[data-criterion-weight="'+c.id+'"]');
+        if(input) input.value=c.base;
+      });
+      render();
+    });
     render();
   }
 
@@ -258,27 +404,85 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   function initReporting(){
     const root=document.querySelector('[data-reporting-demo]');
     if(!root) return;
-    const modes={
+    const scenarios={
       complete:{
+        label:'Complete form',
         fields:[['Date','Jun 18','good'],['Time in','9:05 AM','good'],['Time out','12:20 PM','good'],['Task','Harvesting','good'],['Evidence','Photo attached','good']],
-        status:'Record is report-ready. It flows into the same Excel/Power Query reporting layer without re-entry.'
+        original:[
+          ['Paper capture','Hours and activity are written on a physical sheet.','normal'],
+          ['Collect records','Sheets remain tied to the site until reporting work begins.','friction'],
+          ['Quarter-end review','Staff reviews records after the fact for completeness and consistency.','friction'],
+          ['Reconcile + re-enter','Information is interpreted and manually consolidated for the report.','friction'],
+          ['Quarterly report','The report is produced after the manual cleanup cycle.','normal']
+        ],
+        redesigned:[
+          ['Structured capture','The same required fields enter one consistent record.','clean'],
+          ['Validate','Required fields and error flags are checked before quarter-end.','clean'],
+          ['Correction path','No correction is needed for this clean submission.','muted'],
+          ['Consolidate','Excel / Power Query / formulas reuse the structured record.','clean'],
+          ['Report + analyze','The same dataset supports reporting, filters, charts, and operational analysis.','clean']
+        ],
+        oldDetect:'Quarter-end review',newDetect:'At capture / validation',
+        insight:'Even a clean record benefits because the same structure flows into reporting without being re-keyed.'
       },
       missing:{
+        label:'Missing time-out',
         fields:[['Date','Jun 18','good'],['Time in','9:05 AM','good'],['Time out','Missing','bad'],['Task','Harvesting','good'],['Evidence','Photo attached','good']],
-        status:'Validation catches the missing time-out before quarterly consolidation. Staff can contact the volunteer, correct the record, and then include it.'
+        original:[
+          ['Paper capture','The incomplete record can sit on the sheet without an immediate check.','risk'],
+          ['Collect records','The missing value travels forward with the rest of the paperwork.','risk'],
+          ['Quarter-end review','The problem becomes visible while the report is already being assembled.','risk'],
+          ['Reconcile + re-enter','Staff reconstructs the missing detail and then consolidates it manually.','resolve'],
+          ['Quarterly report','Reporting waits on the correction or accepts weaker evidence.','friction']
+        ],
+        redesigned:[
+          ['Structured capture','The record enters the same digital schema as every other submission.','normal'],
+          ['Validate','The missing time-out is flagged before quarterly consolidation.','risk'],
+          ['Correction path','Staff follows up, corrects the record, and returns it to the same dataset.','resolve'],
+          ['Consolidate','Only corrected records flow into the reusable reporting layer.','clean'],
+          ['Report + analyze','Quarter-end work starts from a cleaner dataset instead of discovering the exception late.','clean']
+        ],
+        oldDetect:'During report assembly',newDetect:'Before consolidation',
+        insight:'The redesign moves error discovery earlier, when the missing detail is cheaper to resolve and before it contaminates the quarter-end workflow.'
       },
       fallback:{
+        label:'Text-message fallback',
         fields:[['Submission','Text message','bad'],['Hours','9:05 AM–12:20 PM','good'],['Task','Harvesting','good'],['Evidence','Sent separately','good']],
-        status:'Fallback path: staff enters the texted details into the same structured record so accessibility problems do not break the reporting system.'
+        original:[
+          ['Ad hoc capture','Hours arrive outside the paper record and become a separate information fragment.','risk'],
+          ['Collect records','Staff has to remember that the text and paper trail belong together.','risk'],
+          ['Quarter-end review','Disconnected evidence has to be found and reconciled manually.','risk'],
+          ['Reconcile + re-enter','Staff reconstructs one usable record from multiple sources.','resolve'],
+          ['Quarterly report','The result can be reported, but only after extra manual coordination.','friction']
+        ],
+        redesigned:[
+          ['Accessible fallback','The volunteer can still send details by text when the form is inconvenient.','resolve'],
+          ['Validate','Staff checks the same required information before entry.','normal'],
+          ['Correction / entry','The fallback is entered back into the same structured record format.','resolve'],
+          ['Consolidate','It joins the same Excel / Power Query layer as form submissions.','clean'],
+          ['Report + analyze','Accessibility does not create a second reporting system.','clean']
+        ],
+        oldDetect:'At manual reconciliation',newDetect:'At fallback intake',
+        insight:'The fallback stays usable because it rejoins the same data structure before reporting rather than becoming a parallel process.'
       }
     };
     const buttons=[...root.querySelectorAll('[data-report-mode]')];
     const record=root.querySelector('[data-report-record]');
+    const original=root.querySelector('[data-report-original]');
+    const redesigned=root.querySelector('[data-report-redesigned]');
+    const pathHtml=steps=>steps.map(([title,detail,state],i)=>
+      '<div class="report-path-step state-'+state+'"><span class="report-path-num">'+(i+1)+'</span><div><strong>'+title+'</strong><small>'+detail+'</small></div></div>'
+    ).join('');
     function render(key){
-      const m=modes[key];
+      const m=scenarios[key];
       record.innerHTML=m.fields.map(([label,value,state])=>'<div class="'+state+'"><small>'+label+'</small><strong>'+value+'</strong></div>').join('');
-      root.querySelector('[data-report-status]').textContent=m.status;
-      buttons.forEach(b=>b.classList.toggle('active',b.dataset.reportMode===key));
+      original.innerHTML=pathHtml(m.original);
+      redesigned.innerHTML=pathHtml(m.redesigned);
+      root.querySelector('[data-report-old-detect]').textContent=m.oldDetect;
+      root.querySelector('[data-report-new-detect]').textContent=m.newDetect;
+      root.querySelector('[data-report-insight]').textContent=m.insight;
+      root.querySelector('[data-report-status]').innerHTML='<strong>'+m.label+'.</strong> '+m.insight;
+      buttons.forEach(b=>{const active=b.dataset.reportMode===key;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
     }
     buttons.forEach(b=>b.addEventListener('click',()=>render(b.dataset.reportMode)));
     render('complete');
@@ -295,6 +499,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
 /* Global portfolio search */
 (function(){
   const searchItems=[{"type":"page","title":"About","href":"/about.html","description":"Background, working loop, education, credentials, and capabilities.","tags":["about","education","credentials","capabilities","working loop"]},{"type":"page","title":"Experience","href":"/experience.html","description":"Professional operations, consulting, event work, and experience case studies.","tags":["experience","operations","consulting","leadership"]},{"type":"page","title":"Projects","href":"/projects.html","description":"Selected work across systems, finance, analytics, strategy, and product.","tags":["projects","portfolio","case studies"]},{"type":"page","title":"Articles","href":"/articles.html","description":"Writing on systems, modeling, finance, strategy, operations, and decision-making.","tags":["articles","writing","essays"]},{"type":"page","title":"Resume Library","href":"/resume.html","description":"One-page resumes for finance, analytics, product systems, operations, and consulting.","tags":["resume","finance resume","analytics resume","product resume","operations resume","consulting resume"]},{"type":"experience","title":"United Indians — Operations, Grants & Process Redesign","href":"/experience/united-indians.html","description":"Workflow redesign, Excel automation, grant budgeting, compliance reporting, internship leadership, and communication systems.","tags":["process redesign","program operations","excel modeling","power query","vba","grant","compliance","internship","stakeholder communication","workflow"]},{"type":"experience","title":"Business Consulting Association","href":"/experience/bca.html","description":"Client research, pricing, market analysis, case leadership, strategic recommendations, and deliverable QA.","tags":["consulting","strategy","stakeholder research","market research","pricing","leadership","client research","decision support"]},{"type":"experience","title":"N&M Events — Live Event Operations","href":"/experience/nm-events.html","description":"Setup, logistics, inventory, layouts, transportation, and real-time coordination under changing requirements.","tags":["operations","event operations","logistics","coordination","contingency","program operations"]},{"type":"project","title":"Modeling International Expansion Under Uncertainty","href":"/projects/monte-carlo.html","description":"15-year Monte Carlo expansion framework across 120,000 simulated paths, 23 stochastic variables, financing, rollout strategy, and valuation.","tags":["monte carlo","python","model validation","npv","irr","wacc","finance","simulation","dependence modeling","international expansion","decision science"]},{"type":"project","title":"System — A Local-First Personal Analytics Platform","href":"/projects/system.html","description":"Kotlin Multiplatform product spanning requirements, local-first data, sync/history semantics, analytics, testing, and AI-assisted development.","tags":["product requirements","kotlin multiplatform","sql","postgresql","sqldelight","supabase","regression testing","ai-assisted workflows","local-first","product","relational modeling"]},{"type":"project","title":"Capital Budgeting for a Five-Warehouse Expansion","href":"/projects/costco-capital-budgeting.html","description":"Incremental cash-flow modeling, sensitivity, WACC, NPV/IRR, downside analysis, and financing decisions.","tags":["capital budgeting","excel modeling","npv","irr","wacc","finance","sensitivity","model validation","costco"]},{"type":"project","title":"Valuing Apple When the Methods Disagree","href":"/projects/apple-valuation.html","description":"FCFF DCF, dividend discount, peer P/E, WACC, reconciliation, and interpretation of conflicting valuation methods.","tags":["apple","valuation","dcf","fcff","ddm","p/e","wacc","finance","excel modeling","model validation"]},{"type":"project","title":"Screening Singapore for Costco Market Entry","href":"/projects/costco-singapore.html","description":"Country screening, pricing and financial research, localization, operating constraints, and decision-framework QA.","tags":["costco singapore","international strategy","country screening","strategy","excel modeling","model validation","market entry"]},{"type":"project","title":"UniPath — AI-Assisted Student Lifecycle Platform","href":"/projects/unipath.html","description":"34-table PostgreSQL schema, Python proof of concept, ranking, semantic matching, admissions estimates, and academic-risk workflows.","tags":["unipath","python","sql","postgresql","relational modeling","product requirements","ai","database","semantic matching"]},{"type":"project","title":"WEBTOON — Strategy as an Activity System","href":"/projects/webtoon.html","description":"Organizational structure, Five Forces, competitive dynamics, value-chain analysis, and strategic synthesis.","tags":["webtoon","strategy","five forces","value chain","competitive analysis","research"]},{"type":"project","title":"Visionaire — Product Economics for Smart Glasses","href":"/projects/visionaire.html","description":"Pricing, startup costs, revenue and expense projections, break-even, and early-stage product economics.","tags":["visionaire","product economics","pricing","break-even","excel modeling","smart glasses"]},{"type":"article","title":"Automating orchestration without automating judgment","href":"/articles/ai-orchestration.html","description":"Durable worker state, task contracts, handoffs, validation, and human review in AI-assisted development.","tags":["ai-assisted workflows","product requirements","regression testing","system","orchestration"]},{"type":"article","title":"Historical truth is a product requirement","href":"/articles/historical-truth-is-a-product-requirement.html","description":"Why identity, sync, history, and analytics semantics have to agree before a product can be trusted.","tags":["product requirements","regression testing","sql","postgresql","relational modeling","system","local-first"]},{"type":"article","title":"Digitizing a workflow is not the same as improving it","href":"/articles/workflow-redesign.html","description":"Validation, correction paths, information reuse, and the difference between digitizing and redesigning an operating process.","tags":["process redesign","program operations","excel modeling","united indians","workflow","power query"]},{"type":"article","title":"Making the work visible is part of doing the work","href":"/articles/make-the-work-visible.html","description":"Communication as a trust, alignment, and correction mechanism in collaborative work.","tags":["program operations","stakeholder communication","leadership","united indians"]},{"type":"article","title":"A model can run and still be wrong","href":"/articles/model-can-run-and-still-be-wrong.html","description":"Separating data, calibration, economic logic, implementation, and documentation failures.","tags":["model validation","python","monte carlo","debugging","governance"]},{"type":"article","title":"Why dependence modeling became the hardest part","href":"/articles/dependence-modeling.html","description":"Empirical marginals, rank dependence, PSD repair, temporal persistence, and joint-system validation.","tags":["monte carlo","python","model validation","dependence modeling","correlation"]},{"type":"article","title":"When financing constraints change the strategy itself","href":"/articles/financing-changes-strategy.html","description":"Why financing capacity can change the realized expansion path, not just the discount rate.","tags":["monte carlo","finance","npv","irr","wacc","strategy","financing"]},{"type":"article","title":"A positive NPV is not the end of the decision","href":"/articles/capital-budgeting-under-downside.html","description":"Sensitivity, downside analysis, operating controls, and capital-allocation decisions.","tags":["capital budgeting","npv","irr","wacc","excel modeling","model validation","finance"]},{"type":"article","title":"When valuation methods disagree, don’t average them","href":"/articles/valuation-disagreement.html","description":"Why FCFF, DDM, peer P/E, and market price can tell different economic stories.","tags":["valuation","dcf","fcff","ddm","p/e","finance","apple"]},{"type":"article","title":"A weighted score is not a strategy","href":"/articles/scores-vs-decisions.html","description":"Why ranking frameworks help only when their tradeoffs, assumptions, and governance remain visible.","tags":["strategy","country screening","model validation","costco singapore","decision framework"]},{"type":"article","title":"AI confidence is not user trust","href":"/articles/ai-confidence-is-not-user-trust.html","description":"Explainability, hard constraints, fallback behavior, and honest boundaries around probabilistic outputs.","tags":["product requirements","python","ai-assisted workflows","unipath","ai","trust"]},{"type":"article","title":"Strategy frameworks are better when they connect","href":"/articles/activity-systems-beat-framework-checklists.html","description":"Turning separate strategy analyses into a coherent activity system.","tags":["strategy","webtoon","consulting","stakeholder research","synthesis"]},{"type":"article","title":"Robust decisions beat perfect forecasts","href":"/articles/robust-decisions-under-incomplete-information.html","description":"Ranges, downside, reversibility, and decisions that remain acceptable under incomplete information.","tags":["model validation","process redesign","product requirements","decision-making","uncertainty","operations"]}];
+  searchItems.push(...[{"type": "page", "title": "Atharva Barad — Home", "href": "/index.html", "description": "Selected work across systems, analytics, finance, product, and operations.", "tags": ["home", "atharva barad"]}, {"type": "project", "title": "CommuteWise", "href": "/projects.html#commutewise", "description": "Public team release; requirements consolidation, integration review, manual/user testing, bug identification, and release validation.", "tags": ["commutewise", "fastapi", "maps", "qa", "requirements", "software", "product"]}, {"type": "project", "title": "Database Systems", "href": "/projects.html#database-systems", "description": "Coursework / team project: schemas, ERDs, parameterized queries, transactions, and application integration.", "tags": ["css 475", "database", "sql", "postgresql", "python", "data", "relational modeling"]}, {"type": "project", "title": "Tableau Data Visualization", "href": "/projects.html#tableau", "description": "Public academic visualization project demonstrating dashboard and storytelling exposure.", "tags": ["tableau", "data visualization", "dashboard", "data"]}]);
   const nav=document.querySelector('.nav-links');
   const header=document.querySelector('.site-header');
   if(!nav||!header||document.querySelector('[data-global-search-trigger]')) return;
@@ -304,6 +509,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   trigger.type='button';
   trigger.className='global-search-trigger';
   trigger.setAttribute('data-global-search-trigger','');
+  trigger.setAttribute('aria-label','Search portfolio');
   trigger.setAttribute('aria-expanded','false');
   trigger.setAttribute('aria-controls','global-search-dropdown');
   trigger.innerHTML='<span class="global-search-icon" aria-hidden="true"></span><span class="global-search-label">Search</span>';
@@ -329,17 +535,24 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   const typeButtons=[...dropdown.querySelectorAll('[data-global-search-type]')];
   let type='all';
 
-  const norm=s=>(s||'').toLowerCase().replace(/[–—]/g,'-').trim();
+  const norm=s=>(s||'').toLowerCase().replace(/[–—]/g,'-').replace(/\s+\/\s+/g,' ').trim();
+  // Prepare searchable text once, not on every keystroke.
+  const index=searchItems.map(item=>{
+    const title=norm(item.title),desc=norm(item.description),tags=(item.tags||[]).map(norm);
+    return {item,title,desc,tags,haystack:[title,desc,...tags].join(' ')};
+  });
+  let returnFocus=trigger;
+  let pendingRender=0;
+  let lastRenderKey='';
   const label=t=>({experience:'Experience',project:'Project',article:'Article',page:'Page'}[t]||t);
 
-  function score(item,q){
-    if(!q) return item.type==='page'?2:1;
-    const terms=q.split(/\s+/).filter(Boolean);
-    const title=norm(item.title), desc=norm(item.description), tags=(item.tags||[]).map(norm);
-    const haystack=title+' '+desc+' '+tags.join(' ');
+  function score(entry,q,terms){
+    if(!q) return entry.item.type==='page'?2:1;
+    const {title,desc,tags,haystack}=entry;
     if(!terms.every(term=>haystack.includes(term))) return -1;
     let s=0;
     if(title.includes(q)) s+=20;
+    if(title.startsWith(q)) s+=12;
     if(tags.some(tag=>tag===q)) s+=16;
     terms.forEach(term=>{
       if(title.includes(term)) s+=8;
@@ -351,34 +564,60 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
 
   function render(){
     const q=norm(input.value);
-    const matches=searchItems.filter(item=>type==='all'||item.type===type)
-      .map(item=>({item,score:score(item,q)})).filter(x=>x.score>=0)
-      .sort((a,b)=>b.score-a.score||a.item.title.localeCompare(b.item.title))
-      .slice(0,q?10:8);
+    const key=type+'|'+q;
+    if(key===lastRenderKey) return;
+    lastRenderKey=key;
+    const terms=q.split(/\s+/).filter(Boolean);
+    const allMatches=index.filter(entry=>type==='all'||entry.item.type===type)
+      .map(entry=>({item:entry.item,score:score(entry,q,terms)})).filter(x=>x.score>=0)
+      .sort((a,b)=>b.score-a.score||a.item.title.localeCompare(b.item.title));
+    const matches=allMatches;
 
     results.innerHTML=matches.map(({item})=>
       '<a class="global-search-result" href="'+item.href+'"><span class="global-search-result-type">'+label(item.type)+'</span><span class="global-search-result-copy"><strong>'+item.title+'</strong><small>'+item.description+'</small></span><span class="global-search-result-arrow" aria-hidden="true">→</span></a>'
     ).join('');
     empty.hidden=matches.length!==0;
-    status.textContent=q?(matches.length+' result'+(matches.length===1?'':'s')):'Featured links';
-    typeButtons.forEach(btn=>btn.classList.toggle('active',btn.dataset.globalSearchType===type));
+    status.textContent=q?(allMatches.length+' result'+(allMatches.length===1?'':'s')):(allMatches.length+' indexed items');
+    results.scrollTop=0;
+    typeButtons.forEach(btn=>{const active=btn.dataset.globalSearchType===type;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});
   }
 
   function openSearch(query){
+    if(dropdown.hidden) returnFocus=document.activeElement;
+    document.dispatchEvent(new Event('portfolio:search-open'));
     dropdown.hidden=false;
     trigger.setAttribute('aria-expanded','true');
     if(typeof query==='string'){input.value=query;type='all';}
     render();
-    requestAnimationFrame(()=>input.focus());
+    requestAnimationFrame(()=>{if(!dropdown.hidden) input.focus({preventScroll:true});});
   }
-  function closeSearch(){
+  function closeSearch(restoreFocus=false){
+    cancelAnimationFrame(pendingRender);
     dropdown.hidden=true;
     trigger.setAttribute('aria-expanded','false');
+    if(restoreFocus && returnFocus && returnFocus.isConnected) returnFocus.focus({preventScroll:true});
   }
 
   trigger.addEventListener('click',()=>dropdown.hidden?openSearch(''):closeSearch());
-  close.addEventListener('click',closeSearch);
-  input.addEventListener('input',render);
+  close.addEventListener('click',()=>closeSearch(true));
+  input.addEventListener('input',()=>{cancelAnimationFrame(pendingRender);pendingRender=requestAnimationFrame(render);});
+  dropdown.addEventListener('keydown',event=>{
+    if(event.key!=='ArrowDown' && event.key!=='ArrowUp' && event.key!=='Enter') return;
+    if(pendingRender){cancelAnimationFrame(pendingRender);render();}
+    const links=[...results.querySelectorAll('a')];
+    const current=links.indexOf(document.activeElement);
+    if(event.key==='Enter' && document.activeElement===input && links.length){event.preventDefault();links[0].click();}
+    else if((document.activeElement===input || current>=0) && event.key!=='Enter'){
+      event.preventDefault();
+      const next=current+(event.key==='ArrowDown'?1:-1);
+      if(next<0) input.focus({preventScroll:true});
+      else if(links.length) links[Math.min(next,links.length-1)].focus({preventScroll:true});
+      if(document.activeElement!==input) document.activeElement.scrollIntoView({block:'nearest'});
+    }
+  });
+  header.addEventListener('focusout',()=>{requestAnimationFrame(()=>{
+    if(!dropdown.hidden && !dropdown.contains(document.activeElement) && document.activeElement!==trigger) closeSearch();
+  });});
   typeButtons.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.globalSearchType;render();input.focus();}));
 
   document.addEventListener('click',event=>{
@@ -395,7 +634,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
     const active=document.activeElement;
     const typing=active&&(active.tagName==='INPUT'||active.tagName==='TEXTAREA'||active.isContentEditable);
     if(event.key==='/'&&!typing){event.preventDefault();openSearch('');}
-    else if(event.key==='Escape'&&!dropdown.hidden){event.preventDefault();closeSearch();trigger.focus();}
+    else if(event.key==='Escape'&&!dropdown.hidden){event.preventDefault();closeSearch(true);}
   });
 
   window.portfolioSearch={open:openSearch,close:closeSearch};
