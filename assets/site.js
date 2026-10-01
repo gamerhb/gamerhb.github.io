@@ -21,118 +21,115 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   function initMonteCarlo(){
     const root=document.querySelector('[data-monte-carlo-explorer]');
     if(!root) return;
-    const data={
-      'Low':{
-        'Aggressive':[-323.2,-268.9,-170.3,1.4,-3.0,20.6,.65,10.3,16.7,100,6,0,0,318.3,0,1.3],
-        'Moderate':[-161.8,-139.8,-107.1,1.6,-6.0,20.6,.56,12.1,7.5,25.1,4,100,30,159.4,7.1,1.5],
-        'Organic':[-53.2,-42.2,-27.3,1.7,-.6,20.6,.87,9.2,19.5,.1,1,100,71,53.4,0,.1]
-      },
-      'Lower-middle':{
-        'Aggressive':[-286.0,-166.7,107.2,17.7,6.5,17.6,1.91,10.0,57.5,100,6,0,0,286.8,0,17.0],
-        'Moderate':[-144.6,-107.2,90.9,17.9,5.3,17.6,1.51,13.6,42.1,67.8,6,96.9,12,145.6,24.3,17.7],
-        'Organic':[-46.0,-28.1,23.0,16.3,5.8,17.6,1.51,11.4,55.4,3.1,2,100,66,49.4,0,3.1]
-      },
-      'Upper-middle':{
-        'Aggressive':[-281.8,-71.3,353.7,38.4,12.2,15.3,3.28,10.1,72.7,100,6,0,0,286.8,0,37.1],
-        'Moderate':[-143.1,-50.0,302.9,39.2,12.4,15.3,3.10,14.1,65.6,79.6,6,89.1,5,146.6,31.9,38.7],
-        'Organic':[-43.8,-14.2,120.7,37.5,11.7,15.3,2.07,14.0,65.4,9.2,2,100,58,50.1,0,9.1]
-      },
-      'High':{
-        'Aggressive':[-317.7,257.0,833.2,69.8,17.6,10.4,5.77,11.3,76.8,100,6,0,0,322.8,0,69.4],
-        'Moderate':[-159.5,226.9,760.2,70.7,18.6,10.4,5.92,15.7,73.3,81.9,6,74.4,2,165.5,55.8,70.6],
-        'Organic':[-46.0,69.6,418.4,74.2,19.1,10.4,3.59,16.6,76.8,19.9,3,100,51,57.0,0,19.9]
-      }
+
+    const rows=[
+      {income:'Low',strategy:'Aggressive',p10:-323.2,median:-268.9,p90:-170.3,positive:1.4,completion:100.0,strict:1.3,sponsor:318.3,explanation:'Sponsor support guarantees the six-warehouse rollout, but it does not rescue the underlying economics: the full P10–P90 range remains negative and only 1.4% of paths produce positive NPV. The result is maximum execution certainty paired with the largest capital exposure in the weakest reference class.'},
+      {income:'Low',strategy:'Moderate',p10:-161.8,median:-139.8,p90:-107.1,positive:1.6,completion:25.1,strict:1.5,sponsor:159.4,explanation:'Staging materially reduces downside and sponsor capital versus Aggressive, but even P90 remains negative. Only 25.1% of paths complete all six warehouses and strict full-project success is 1.5%, so financing discipline cannot overcome the weak base economics.'},
+      {income:'Low',strategy:'Organic',p10:-53.2,median:-42.2,p90:-27.3,positive:1.7,completion:.1,strict:.1,sponsor:53.4,explanation:'Organic produces the narrowest loss range and the least negative median by withholding later investment when retained cash is insufficient. That capital protection comes almost entirely through not scaling: full six-warehouse completion and strict success are both about 0.1%.'},
+
+      {income:'Lower-middle',strategy:'Aggressive',p10:-286.0,median:-166.7,p90:107.2,positive:17.7,completion:100.0,strict:17.0,sponsor:286.8,explanation:'The favorable tail finally crosses into positive value, but the median remains strongly negative. Aggressive still completes all six warehouses, so the model captures more upside when conditions are favorable while also committing substantial capital to the many paths that remain unattractive.'},
+      {income:'Lower-middle',strategy:'Moderate',p10:-144.6,median:-107.2,p90:90.9,positive:17.9,completion:67.8,strict:17.7,sponsor:145.6,explanation:'Moderate keeps a meaningful positive upper tail while cutting sponsor exposure roughly in half versus Aggressive. The median is still negative, however, so this remains an exception-driven opportunity set rather than a typical positive-value case; 67.8% of paths complete the full network.'},
+      {income:'Lower-middle',strategy:'Organic',p10:-46.0,median:-28.1,p90:23.0,positive:16.3,completion:3.1,strict:3.1,sponsor:49.4,explanation:'Organic compresses both upside and downside and brings the median closest to zero, but only 3.1% of paths complete all six warehouses. Some partial-expansion paths create value, yet the retained-cash rule rarely supports the intended six-store strategy.'},
+
+      {income:'Upper-middle',strategy:'Aggressive',p10:-281.8,median:-71.3,p90:353.7,positive:38.4,completion:100.0,strict:37.1,sponsor:286.8,explanation:'Upper-middle income is the transition zone: the median is still negative, but the P90 rises to $353.7M and 38.4% of paths have positive NPV. Aggressive captures the largest upside and guarantees scale, while also preserving a wide downside range that makes named-country and site evidence important.'},
+      {income:'Upper-middle',strategy:'Moderate',p10:-143.1,median:-50.0,p90:302.9,positive:39.2,completion:79.6,strict:38.7,sponsor:146.6,explanation:'Moderate preserves much of the favorable tail while reducing sponsor exposure and filtering weaker continuation states. It produces the highest strict full-project success rate in this income group at 38.7%, but the median NPV remains negative, supporting a case-by-case underwriting interpretation rather than automatic approval.'},
+      {income:'Upper-middle',strategy:'Organic',p10:-43.8,median:-14.2,p90:120.7,positive:37.5,completion:9.2,strict:9.1,sponsor:50.1,explanation:'Organic limits downside and keeps the median close to break-even, but the same capital-preservation rule severely limits scale: only 9.2% of paths complete all six warehouses. Positive partial economics are therefore much more common than full-project success.'},
+
+      {income:'High',strategy:'Aggressive',p10:-317.7,median:257.0,p90:833.2,positive:69.8,completion:100.0,strict:69.4,sponsor:322.8,explanation:'High-income economics support a strongly positive median and the largest upside in the study, while sponsor support guarantees the six-warehouse rollout. The tradeoff is the widest downside and the highest sponsor capital requirement, so Aggressive pays for execution certainty with capital exposure.'},
+      {income:'High',strategy:'Moderate',p10:-159.5,median:226.9,p90:760.2,positive:70.7,completion:81.9,strict:70.6,sponsor:165.5,explanation:'Moderate keeps a strongly positive median and substantial upside while materially reducing sponsor capital. Its strict full-project success rate is slightly above Aggressive at 70.6%; the report also notes that its mean NPV is slightly higher because staged continuation filters some severe downside paths even though Aggressive has the higher median.'},
+      {income:'High',strategy:'Organic',p10:-46.0,median:69.6,p90:418.4,positive:74.2,completion:19.9,strict:19.9,sponsor:57.0,explanation:'Organic has the highest probability of positive NPV in the High-income class and protects outside capital most strongly, but only 19.9% of paths complete all six warehouses. This is the clearest example of why positive enterprise value and strategic completion are not the same outcome.'}
+    ];
+
+    const incomeButtons=[...root.querySelectorAll('[data-mc-income-filter]')];
+    const strategyButtons=[...root.querySelectorAll('[data-mc-strategy-filter]')];
+    const svg=root.querySelector('[data-mc-figure6]');
+    const analysis=root.querySelector('[data-mc-analysis]');
+    let income='All';
+    let strategy='All';
+
+    const moneyM=v=>{
+      const sign=v<0?'-':'';
+      return sign+'$'+Math.abs(v).toFixed(1)+'M';
     };
-    const income=root.querySelector('[data-mc-income]');
-    const strategyBtns=[...root.querySelectorAll('[data-mc-strategy]')];
-    let strategy='Moderate';
-    const min=-350,max=850,scale=v=>Math.max(0,Math.min(100,(v-min)/(max-min)*100));
-    const set=(sel,value)=>{const el=root.querySelector(sel); if(el) el.textContent=value;};
-    function render(){
-      const d=data[income.value][strategy];
-      set('[data-mc-median]',moneyM(d[1]));
-      set('[data-mc-positive]',pct(d[3]));
-      set('[data-mc-strict]',pct(d[15]));
-      set('[data-mc-complete]',pct(d[9]));
-      set('[data-mc-irr]',pct(d[4]));
-      set('[data-mc-wacc]',pct(d[5]));
-      set('[data-mc-moic]',d[6].toFixed(2)+'x');
-      set('[data-mc-sponsor]',moneyM(d[13]));
-      set('[data-mc-debt]',moneyM(d[14]));
-      const range=root.querySelector('[data-mc-range]');
-      const line=range.querySelector('.range-line');
-      const dot=range.querySelector('.range-dot');
-      const zero=range.querySelector('.zero-line');
-      const labels=[...range.querySelectorAll('.range-labels span')];
-      const p10=scale(d[0]),med=scale(d[1]),p90=scale(d[2]);
-      line.style.left=p10+'%'; line.style.width=Math.max(1,p90-p10)+'%';
-      dot.style.left='calc('+med+'% - 7px)';
-      zero.style.left=scale(0)+'%';
-      labels[0].textContent='P10 '+moneyM(d[0]);
-      labels[1].textContent='Median '+moneyM(d[1]);
-      labels[2].textContent='P90 '+moneyM(d[2]);
+    const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 
-      const labelRow=range.querySelector('.range-labels');
-      let leaders=range.querySelector('.range-leaders');
-      if(!leaders){
-        leaders=document.createElementNS('http://www.w3.org/2000/svg','svg');
-        leaders.setAttribute('class','range-leaders');
-        leaders.setAttribute('aria-hidden','true');
-        leaders.innerHTML='<defs><marker id="range-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#61635f"></path></marker></defs><path class="range-leader" marker-end="url(#range-arrow)"></path><path class="range-leader" marker-end="url(#range-arrow)"></path><path class="range-leader" marker-end="url(#range-arrow)"></path>';
-        range.appendChild(leaders);
-      }
-      requestAnimationFrame(()=>{
-        const width=labelRow.clientWidth;
-        if(!width) return;
-        const anchors=[p10,med,p90].map(v=>v/100*width);
-        const widths=labels.map(el=>el.offsetWidth);
-        const edge=10;
-        const gap=12;
-        let centers=anchors.map((x,i)=>Math.max(edge+widths[i]/2,Math.min(width-edge-widths[i]/2,x)));
+    function renderChart(filtered){
+      const W=980,H=520;
+      const left=78,right=944,top=38,bottom=338;
+      const yMin=-400,yMax=900;
+      const ticks=[-400,-200,0,200,400,600,800];
+      const y=v=>top+(yMax-v)/(yMax-yMin)*(bottom-top);
+      const n=filtered.length;
+      const xAt=i=>n===1?(left+right)/2:left+(right-left)*(i/(n-1));
 
-        for(let pass=0;pass<3;pass++){
-          for(let i=1;i<centers.length;i++){
-            const minimum=centers[i-1]+widths[i-1]/2+gap+widths[i]/2;
-            if(centers[i]<minimum) centers[i]=minimum;
-          }
-          const rightLimit=width-edge-widths[2]/2;
-          if(centers[2]>rightLimit){
-            const shift=centers[2]-rightLimit;
-            centers=centers.map(x=>x-shift);
-          }
-          for(let i=centers.length-2;i>=0;i--){
-            const maximum=centers[i+1]-widths[i+1]/2-gap-widths[i]/2;
-            if(centers[i]>maximum) centers[i]=maximum;
-          }
-          const leftLimit=edge+widths[0]/2;
-          if(centers[0]<leftLimit){
-            const shift=leftLimit-centers[0];
-            centers=centers.map(x=>x+shift);
-          }
-        }
-
-        labels.forEach((label,i)=>{label.style.left=centers[i]+'px';});
-        leaders.setAttribute('viewBox','0 0 '+width+' 44');
-        [...leaders.querySelectorAll('.range-leader')].forEach((path,i)=>{
-          const displaced=Math.abs(centers[i]-anchors[i])>6;
-          path.style.opacity=displaced?'1':'0';
-          const mid=(centers[i]+anchors[i])/2;
-          path.setAttribute('d','M '+centers[i]+' 38 Q '+mid+' 24 '+anchors[i]+' 6');
-        });
+      let out='';
+      out+='<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="transparent"></rect>';
+      ticks.forEach(t=>{
+        const yy=y(t);
+        out+='<line class="mc-grid" x1="'+left+'" y1="'+yy+'" x2="'+right+'" y2="'+yy+'"></line>';
+        out+='<text class="mc-y-label" x="'+(left-12)+'" y="'+(yy+4)+'" text-anchor="end">'+t+'</text>';
       });
-      strategyBtns.forEach(b=>b.classList.toggle('active',b.dataset.mcStrategy===strategy));
-      const note=root.querySelector('[data-mc-interpretation]');
-      if(note){
-        let txt='';
-        if(income.value==='Low') txt='The full P10–P90 value range remains negative. Strategy mainly changes capital exposure and completion behavior.';
-        else if(income.value==='Lower-middle') txt='Median value remains negative, but the upper tail crosses into positive territory. Favorable cases exist without being typical.';
-        else if(income.value==='Upper-middle') txt='This is the transition zone: negative median value with a substantial positive upper tail and much stronger strict-success frequency.';
-        else txt='Median value is positive under all three strategies, but P10 remains negative—so the class is a screening signal, not automatic approval.';
-        note.textContent=txt;
+      out+='<line class="mc-axis" x1="'+left+'" y1="'+top+'" x2="'+left+'" y2="'+bottom+'"></line>';
+      out+='<line class="mc-axis" x1="'+left+'" y1="'+bottom+'" x2="'+right+'" y2="'+bottom+'"></line>';
+      out+='<text class="mc-axis-title" transform="translate(20 '+((top+bottom)/2)+') rotate(-90)" text-anchor="middle">NPV ($M)</text>';
+      out+='<line class="mc-zero" x1="'+left+'" y1="'+y(0)+'" x2="'+right+'" y2="'+y(0)+'"></line>';
+
+      filtered.forEach((d,i)=>{
+        const x=xAt(i), yp10=y(d.p10), ymed=y(d.median), yp90=y(d.p90);
+        const label=d.income+' / '+d.strategy;
+        out+='<g class="mc-scenario-mark"><title>'+esc(label)+': P10 '+esc(moneyM(d.p10))+', Median '+esc(moneyM(d.median))+', P90 '+esc(moneyM(d.p90))+'</title>';
+        out+='<line class="mc-whisker" x1="'+x+'" y1="'+yp90+'" x2="'+x+'" y2="'+yp10+'"></line>';
+        out+='<line class="mc-cap" x1="'+(x-7)+'" y1="'+yp90+'" x2="'+(x+7)+'" y2="'+yp90+'"></line>';
+        out+='<line class="mc-cap" x1="'+(x-7)+'" y1="'+yp10+'" x2="'+(x+7)+'" y2="'+yp10+'"></line>';
+        out+='<circle class="mc-median-dot" cx="'+x+'" cy="'+ymed+'" r="4.5"></circle>';
+        out+='<text class="mc-x-label" x="'+x+'" y="'+(bottom+24)+'" transform="rotate(56 '+x+' '+(bottom+24)+')" text-anchor="start">'+esc(label)+'</text>';
+        out+='</g>';
+      });
+
+      out+='<g class="mc-legend" transform="translate(710 15)">';
+      out+='<line class="mc-whisker" x1="0" y1="0" x2="0" y2="20"></line><line class="mc-cap" x1="-6" y1="0" x2="6" y2="0"></line><line class="mc-cap" x1="-6" y1="20" x2="6" y2="20"></line><text x="13" y="14">P10–P90 range</text>';
+      out+='<circle class="mc-median-dot" cx="132" cy="10" r="4.5"></circle><text x="143" y="14">Median</text>';
+      out+='</g>';
+      svg.setAttribute('viewBox','0 0 '+W+' '+H);
+      svg.innerHTML=out;
+    }
+
+    function renderAnalysis(filtered){
+      if(income!=='All' && strategy!=='All'){
+        const d=filtered[0];
+        analysis.innerHTML='<div class="mc-analysis-kicker">Scenario analysis · Section 7 / Appendix D</div>'+
+          '<h4>'+esc(d.income)+' income · '+esc(d.strategy)+'</h4>'+
+          '<p>'+esc(d.explanation)+'</p>'+
+          '<div class="mc-analysis-stats">'+
+            '<span><strong>P10</strong> '+moneyM(d.p10)+'</span>'+
+            '<span><strong>Median</strong> '+moneyM(d.median)+'</span>'+
+            '<span><strong>P90</strong> '+moneyM(d.p90)+'</span>'+
+            '<span><strong>P(NPV &gt; 0)</strong> '+d.positive.toFixed(1)+'%</span>'+
+            '<span><strong>6/6 by Y15</strong> '+d.completion.toFixed(1)+'%</span>'+
+            '<span><strong>Strict success</strong> '+d.strict.toFixed(1)+'%</span>'+
+          '</div>';
+      }else if(income==='All' && strategy==='All'){
+        analysis.innerHTML='<div class="mc-analysis-kicker">Figure 6 · report-level interpretation</div>'+
+          '<h4>All 12 country–strategy configurations</h4>'+
+          '<p>The dominant pattern is the report\'s development gradient: outcomes progress from strongly negative Low-income economics toward positive High-income economics. Strategy changes both the center and the dispersion: Aggressive generally captures the most scale and upside with the most capital exposure, Organic compresses upside and downside by withholding later investment, and Moderate usually sits between those extremes.</p>'+
+          '<p class="mc-analysis-hint">Choose one income group and one strategy to see the report-based interpretation for that exact combination.</p>';
+      }else{
+        analysis.innerHTML='<div class="mc-analysis-kicker">Filtered Figure 6</div>'+
+          '<h4>Showing '+filtered.length+' of 12 configurations</h4>'+
+          '<p>The chart keeps the same P10–Median–P90 structure as Figure 6 while limiting the view to your selected '+(income!=='All'?'income group':'strategy')+'. Choose one option in the other filter to open the analysis for a specific country-type / rollout combination.</p>';
       }
     }
-    income.addEventListener('change',render);
-    strategyBtns.forEach(b=>b.addEventListener('click',()=>{strategy=b.dataset.mcStrategy;render();}));
+
+    function render(){
+      const filtered=rows.filter(d=>(income==='All'||d.income===income)&&(strategy==='All'||d.strategy===strategy));
+      renderChart(filtered);
+      renderAnalysis(filtered);
+      incomeButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcIncomeFilter===income));
+      strategyButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcStrategyFilter===strategy));
+    }
+
+    incomeButtons.forEach(b=>b.addEventListener('click',()=>{income=b.dataset.mcIncomeFilter;render();}));
+    strategyButtons.forEach(b=>b.addEventListener('click',()=>{strategy=b.dataset.mcStrategyFilter;render();}));
     render();
   }
 
