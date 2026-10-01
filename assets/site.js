@@ -295,31 +295,86 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   function initCountryWeights(){
     const root=document.querySelector('[data-country-weight-explorer]');
     if(!root) return;
-    const avg={
-      'Singapore':{b:7.4,c:7.6666667,r:7.5},
-      'South Korea':{b:5.2,c:7.8333333,r:6.5},
-      'Japan':{b:3.4,c:7.3333333,r:7.25}
-    };
-    const b=root.querySelector('[data-weight-benefits]');
-    const c=root.querySelector('[data-weight-costs]');
-    const r=root.querySelector('[data-weight-risks]');
-    const total=root.querySelector('[data-weight-total]');
+    const countries=['Singapore','South Korea','Japan'];
+    const criteria=[
+      {id:'income',group:'Benefits',base:20,ratings:{'Singapore':9,'South Korea':5,'Japan':4}},
+      {id:'growth',group:'Benefits',base:20,ratings:{'Singapore':8,'South Korea':5,'Japan':1}},
+      {id:'vehicles',group:'Benefits',base:10,ratings:{'Singapore':3,'South Korea':6,'Japan':7}},
+      {id:'corruption',group:'Costs',base:5,ratings:{'Singapore':9,'South Korea':6,'Japan':7}},
+      {id:'infrastructure',group:'Costs',base:5,ratings:{'Singapore':9,'South Korea':8,'Japan':8}},
+      {id:'legal',group:'Costs',base:10,ratings:{'Singapore':9,'South Korea':9,'Japan':8}},
+      {id:'labor',group:'Costs',base:5,ratings:{'Singapore':6,'South Korea':6,'Japan':5}},
+      {id:'property',group:'Costs',base:5,ratings:{'Singapore':4,'South Korea':9,'Japan':8}},
+      {id:'unrest',group:'Risks',base:5,ratings:{'Singapore':7,'South Korea':6,'Japan':8}},
+      {id:'inflation',group:'Risks',base:5,ratings:{'Singapore':8,'South Korea':7,'Japan':9}},
+      {id:'rights',group:'Risks',base:5,ratings:{'Singapore':9,'South Korea':8,'Japan':9}},
+      {id:'aging',group:'Risks',base:5,ratings:{'Singapore':6,'South Korea':5,'Japan':3}}
+    ];
+    const sliders=[...root.querySelectorAll('[data-criterion-weight]')];
     const results=root.querySelector('[data-weight-results]');
-    function render(){
-      let bv=+b.value,cv=+c.value,rv=+r.value;
-      const sum=bv+cv+rv;
-      total.textContent=sum+'%';
-      root.querySelector('[data-out-benefits]').textContent=bv+'%';
-      root.querySelector('[data-out-costs]').textContent=cv+'%';
-      root.querySelector('[data-out-risks]').textContent=rv+'%';
-      const normalized=sum>0?{b:bv/sum,c:cv/sum,r:rv/sum}:{b:0,c:0,r:0};
-      const rows=Object.entries(avg).map(([name,a])=>({name,score:a.b*normalized.b+a.c*normalized.c+a.r*normalized.r})).sort((x,y)=>y.score-x.score);
-      const maxScore=10;
-      results.innerHTML=rows.map((x,i)=>'<div class="rank-row"><span class="rank-pos">'+(i+1)+'</span><span class="rank-name">'+x.name+'</span><div class="lab-bar-track"><div class="lab-bar-fill" style="width:'+x.score/maxScore*100+'%"></div></div><strong>'+x.score.toFixed(2)+'</strong></div>').join('');
-      root.querySelector('[data-weight-status]').textContent=sum===100?'Weights sum to 100%. Scores reproduce the original framework when set to 50 / 30 / 20.':'Weights currently sum to '+sum+'%. The explorer normalizes them proportionally for comparison.';
+    const total=root.querySelector('[data-weight-total]');
+    const status=root.querySelector('[data-weight-status]');
+    const original=Object.fromEntries(criteria.map(c=>[c.id,c.base]));
+
+    function readWeights(){
+      return Object.fromEntries(sliders.map(input=>[input.dataset.criterionWeight,Math.max(0,+input.value||0)]));
     }
-    [b,c,r].forEach(x=>x.addEventListener('input',render));
-    root.querySelector('[data-weight-reset]').addEventListener('click',()=>{b.value=50;c.value=30;r.value=20;render();});
+    function baseScore(country){
+      return criteria.reduce((sum,c)=>sum+c.ratings[country]*(c.base/100),0);
+    }
+    function render(){
+      const raw=readWeights();
+      const rawTotal=criteria.reduce((sum,c)=>sum+raw[c.id],0);
+      const norm=Object.fromEntries(criteria.map(c=>[c.id,rawTotal>0?raw[c.id]/rawTotal*100:0]));
+      total.textContent=rawTotal.toFixed(rawTotal%1?1:0)+'%';
+      const groups={Benefits:0,Costs:0,Risks:0};
+      criteria.forEach(c=>{
+        const out=root.querySelector('[data-criterion-output="'+c.id+'"]');
+        if(out) out.textContent=raw[c.id].toFixed(raw[c.id]%1?1:0)+'%';
+        groups[c.group]+=norm[c.id];
+      });
+      Object.entries(groups).forEach(([g,v])=>{
+        const out=root.querySelector('[data-group-total="'+g+'"]');
+        if(out) out.textContent=v.toFixed(1)+'%';
+      });
+
+      const rows=countries.map(country=>{
+        const byGroup={Benefits:0,Costs:0,Risks:0};
+        let score=0;
+        criteria.forEach(c=>{
+          const contribution=c.ratings[country]*(norm[c.id]/100);
+          score+=contribution;
+          byGroup[c.group]+=contribution;
+        });
+        return {country,score,delta:score-baseScore(country),byGroup};
+      }).sort((x,y)=>y.score-x.score);
+
+      results.innerHTML=rows.map((row,i)=>{
+        const delta=Math.abs(row.delta)<.005?'0.00':(row.delta>0?'+':'')+row.delta.toFixed(2);
+        return '<div class="country-score-card">'+
+          '<div class="country-score-rank"><span>'+(i+1)+'</span><div><strong>'+row.country+'</strong><small>Δ vs original '+delta+'</small></div><b>'+row.score.toFixed(2)+'</b></div>'+
+          '<div class="country-score-bar"><span style="width:'+Math.max(0,Math.min(100,row.score*10))+'%"></span></div>'+
+          '<div class="country-score-breakdown"><span>Benefits <strong>'+row.byGroup.Benefits.toFixed(2)+'</strong></span><span>Costs <strong>'+row.byGroup.Costs.toFixed(2)+'</strong></span><span>Risks <strong>'+row.byGroup.Risks.toFixed(2)+'</strong></span></div>'+
+        '</div>';
+      }).join('');
+
+      const isOriginal=criteria.every(c=>Math.abs(raw[c.id]-original[c.id])<.001);
+      if(isOriginal){
+        status.innerHTML='<strong>Original submitted weights.</strong> This reproduces Singapore 7.50, South Korea 6.25, and Japan 5.35.';
+      }else if(rawTotal===0){
+        status.innerHTML='<strong>No active weight.</strong> Raise at least one criterion to calculate a comparison.';
+      }else{
+        status.innerHTML='<strong>'+rows[0].country+' leads at '+rows[0].score.toFixed(2)+'.</strong> Your inputs sum to '+rawTotal.toFixed(1)+'%; the explorer normalizes them proportionally to 100% before recalculating the country scores.';
+      }
+    }
+    sliders.forEach(input=>input.addEventListener('input',render));
+    root.querySelector('[data-weight-reset]').addEventListener('click',()=>{
+      criteria.forEach(c=>{
+        const input=root.querySelector('[data-criterion-weight="'+c.id+'"]');
+        if(input) input.value=c.base;
+      });
+      render();
+    });
     render();
   }
 
@@ -349,26 +404,84 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
   function initReporting(){
     const root=document.querySelector('[data-reporting-demo]');
     if(!root) return;
-    const modes={
+    const scenarios={
       complete:{
+        label:'Complete form',
         fields:[['Date','Jun 18','good'],['Time in','9:05 AM','good'],['Time out','12:20 PM','good'],['Task','Harvesting','good'],['Evidence','Photo attached','good']],
-        status:'Record is report-ready. It flows into the same Excel/Power Query reporting layer without re-entry.'
+        original:[
+          ['Paper capture','Hours and activity are written on a physical sheet.','normal'],
+          ['Collect records','Sheets remain tied to the site until reporting work begins.','friction'],
+          ['Quarter-end review','Staff reviews records after the fact for completeness and consistency.','friction'],
+          ['Reconcile + re-enter','Information is interpreted and manually consolidated for the report.','friction'],
+          ['Quarterly report','The report is produced after the manual cleanup cycle.','normal']
+        ],
+        redesigned:[
+          ['Structured capture','The same required fields enter one consistent record.','clean'],
+          ['Validate','Required fields and error flags are checked before quarter-end.','clean'],
+          ['Correction path','No correction is needed for this clean submission.','muted'],
+          ['Consolidate','Excel / Power Query / formulas reuse the structured record.','clean'],
+          ['Report + analyze','The same dataset supports reporting, filters, charts, and operational analysis.','clean']
+        ],
+        oldDetect:'Quarter-end review',newDetect:'At capture / validation',
+        insight:'Even a clean record benefits because the same structure flows into reporting without being re-keyed.'
       },
       missing:{
+        label:'Missing time-out',
         fields:[['Date','Jun 18','good'],['Time in','9:05 AM','good'],['Time out','Missing','bad'],['Task','Harvesting','good'],['Evidence','Photo attached','good']],
-        status:'Validation catches the missing time-out before quarterly consolidation. Staff can contact the volunteer, correct the record, and then include it.'
+        original:[
+          ['Paper capture','The incomplete record can sit on the sheet without an immediate check.','risk'],
+          ['Collect records','The missing value travels forward with the rest of the paperwork.','risk'],
+          ['Quarter-end review','The problem becomes visible while the report is already being assembled.','risk'],
+          ['Reconcile + re-enter','Staff reconstructs the missing detail and then consolidates it manually.','resolve'],
+          ['Quarterly report','Reporting waits on the correction or accepts weaker evidence.','friction']
+        ],
+        redesigned:[
+          ['Structured capture','The record enters the same digital schema as every other submission.','normal'],
+          ['Validate','The missing time-out is flagged before quarterly consolidation.','risk'],
+          ['Correction path','Staff follows up, corrects the record, and returns it to the same dataset.','resolve'],
+          ['Consolidate','Only corrected records flow into the reusable reporting layer.','clean'],
+          ['Report + analyze','Quarter-end work starts from a cleaner dataset instead of discovering the exception late.','clean']
+        ],
+        oldDetect:'During report assembly',newDetect:'Before consolidation',
+        insight:'The redesign moves error discovery earlier, when the missing detail is cheaper to resolve and before it contaminates the quarter-end workflow.'
       },
       fallback:{
+        label:'Text-message fallback',
         fields:[['Submission','Text message','bad'],['Hours','9:05 AM–12:20 PM','good'],['Task','Harvesting','good'],['Evidence','Sent separately','good']],
-        status:'Fallback path: staff enters the texted details into the same structured record so accessibility problems do not break the reporting system.'
+        original:[
+          ['Ad hoc capture','Hours arrive outside the paper record and become a separate information fragment.','risk'],
+          ['Collect records','Staff has to remember that the text and paper trail belong together.','risk'],
+          ['Quarter-end review','Disconnected evidence has to be found and reconciled manually.','risk'],
+          ['Reconcile + re-enter','Staff reconstructs one usable record from multiple sources.','resolve'],
+          ['Quarterly report','The result can be reported, but only after extra manual coordination.','friction']
+        ],
+        redesigned:[
+          ['Accessible fallback','The volunteer can still send details by text when the form is inconvenient.','resolve'],
+          ['Validate','Staff checks the same required information before entry.','normal'],
+          ['Correction / entry','The fallback is entered back into the same structured record format.','resolve'],
+          ['Consolidate','It joins the same Excel / Power Query layer as form submissions.','clean'],
+          ['Report + analyze','Accessibility does not create a second reporting system.','clean']
+        ],
+        oldDetect:'At manual reconciliation',newDetect:'At fallback intake',
+        insight:'The fallback stays usable because it rejoins the same data structure before reporting rather than becoming a parallel process.'
       }
     };
     const buttons=[...root.querySelectorAll('[data-report-mode]')];
     const record=root.querySelector('[data-report-record]');
+    const original=root.querySelector('[data-report-original]');
+    const redesigned=root.querySelector('[data-report-redesigned]');
+    const pathHtml=steps=>steps.map(([title,detail,state],i)=>
+      '<div class="report-path-step state-'+state+'"><span class="report-path-num">'+(i+1)+'</span><div><strong>'+title+'</strong><small>'+detail+'</small></div></div>'
+    ).join('');
     function render(key){
-      const m=modes[key];
+      const m=scenarios[key];
       record.innerHTML=m.fields.map(([label,value,state])=>'<div class="'+state+'"><small>'+label+'</small><strong>'+value+'</strong></div>').join('');
-      root.querySelector('[data-report-status]').textContent=m.status;
+      original.innerHTML=pathHtml(m.original);
+      redesigned.innerHTML=pathHtml(m.redesigned);
+      root.querySelector('[data-report-old-detect]').textContent=m.oldDetect;
+      root.querySelector('[data-report-new-detect]').textContent=m.newDetect;
+      root.querySelector('[data-report-insight]').textContent=m.insight;
+      root.querySelector('[data-report-status]').innerHTML='<strong>'+m.label+'.</strong> '+m.insight;
       buttons.forEach(b=>{const active=b.dataset.reportMode===key;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
     }
     buttons.forEach(b=>b.addEventListener('click',()=>render(b.dataset.reportMode)));
@@ -458,13 +571,13 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
     const allMatches=index.filter(entry=>type==='all'||entry.item.type===type)
       .map(entry=>({item:entry.item,score:score(entry,q,terms)})).filter(x=>x.score>=0)
       .sort((a,b)=>b.score-a.score||a.item.title.localeCompare(b.item.title));
-    const matches=allMatches.slice(0,q?10:8);
+    const matches=allMatches;
 
     results.innerHTML=matches.map(({item})=>
       '<a class="global-search-result" href="'+item.href+'"><span class="global-search-result-type">'+label(item.type)+'</span><span class="global-search-result-copy"><strong>'+item.title+'</strong><small>'+item.description+'</small></span><span class="global-search-result-arrow" aria-hidden="true">→</span></a>'
     ).join('');
     empty.hidden=matches.length!==0;
-    status.textContent=q?(allMatches.length>matches.length?'Showing '+matches.length+' of '+allMatches.length+' results':allMatches.length+' result'+(allMatches.length===1?'':'s')):'Featured links';
+    status.textContent=q?(allMatches.length+' result'+(allMatches.length===1?'':'s')):(allMatches.length+' indexed items');
     results.scrollTop=0;
     typeButtons.forEach(btn=>{const active=btn.dataset.globalSearchType===type;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));});
   }
