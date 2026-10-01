@@ -311,3 +311,13 @@ img{max-width:100%}
 .resume-note{margin-top:18px;padding:14px 16px;border-left:3px solid var(--accent);background:rgba(255,253,248,.65);color:var(--muted);font-size:.88rem}
 @media(max-width:900px){.resume-band{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:680px){.resume-choice-grid,.resume-band{grid-template-columns:1fr}}
+
+
+/* Curated resume library */
+.role-resume-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.evidence-band{grid-template-columns:repeat(2,minmax(0,1fr))}
+.evidence-links{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+.evidence-links a{display:inline-flex;padding:5px 8px;border:1px solid var(--line);border-radius:8px;background:var(--paper);font-size:.78rem;font-weight:760;text-decoration:none;transition:transform .16s ease,border-color .16s ease,background .16s ease}
+.evidence-links a:hover{transform:translateY(-1px);border-color:#bdb6aa;background:var(--soft2)}
+@media(max-width:1000px){.role-resume-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.role-resume-grid,.evidence-band{grid-template-columns:1fr}}

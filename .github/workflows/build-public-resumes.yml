@@ -21,56 +21,57 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install PDF dependencies
-        run: pip install "reportlab==4.4.9" "pypdf==6.1.1"
-      - name: Build resumes
+      - name: Install PDF dependencies and Arial-compatible fonts
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-croscore
+          pip install "reportlab==4.4.9" "pypdf==6.1.1"
+      - name: Build curated resumes
         run: python tools/build_public_resumes.py
       - name: Validate resume PDFs
         run: |
           python - <<'PY'
           from pypdf import PdfReader
 
-          core = PdfReader("Atharva_Barad_Resume.pdf")
+          files = {
+              "finance": "Atharva_Barad_Finance_Resume.pdf",
+              "analytics": "Atharva_Barad_Analytics_Resume.pdf",
+              "product": "Atharva_Barad_Product_Systems_Resume.pdf",
+              "operations": "Atharva_Barad_Operations_Resume.pdf",
+              "consulting": "Atharva_Barad_Consulting_Strategy_Resume.pdf",
+              "default": "Atharva_Barad_Resume.pdf",
+          }
+          for label, path in files.items():
+              pdf = PdfReader(path)
+              assert len(pdf.pages) == 1, f"{label} resume must be one page; got {len(pdf.pages)}"
+              text = "\n".join(p.extract_text() or "" for p in pdf.pages)
+              for marker in ["University of Washington Bothell", "Atharva Barad"]:
+                  assert marker in text, f"{label} missing marker: {marker}"
+
+          checks = {
+              "finance": ["Monte Carlo International Expansion Research", "Costco Five-Warehouse Capital Budgeting", "Apple Fundamental Analysis"],
+              "analytics": ["UniPath Student Lifecycle Platform", "CSS 475 Database Systems", "Costco Singapore Market Entry"],
+              "product": ["System (formerly MasterBase)", "CommuteWise", "CSS 475 Database Systems"],
+              "operations": ["N&M Events", "Business Consulting Association", "CommuteWise"],
+              "consulting": ["Business Consulting Association", "WEBTOON Strategic Management Capstone", "Costco Singapore Market Entry"],
+          }
+          for label, markers in checks.items():
+              text = "\n".join(p.extract_text() or "" for p in PdfReader(files[label]).pages)
+              for marker in markers:
+                  assert marker in text, f"{label} missing marker: {marker}"
+
           extended = PdfReader("Atharva_Barad_Extended_Profile.pdf")
-
-          assert len(core.pages) == 1, f"Core resume must be one page; got {len(core.pages)}"
-          assert len(extended.pages) == 5, f"Extended profile must be five pages; got {len(extended.pages)}"
-
-          core_text = "\n".join(p.extract_text() or "" for p in core.pages)
-          extended_text = "\n".join(p.extract_text() or "" for p in extended.pages)
-
-          for marker in [
-              "University of Washington Bothell",
-              "United Indians of All Tribes Foundation",
-              "Business Consulting Association",
-              "Monte Carlo International Expansion Research",
-              "Costco Five-Warehouse Capital Budgeting",
-              "UniPath Student Lifecycle Platform",
-              "SKILLS & CREDENTIALS",
-          ]:
-              assert marker in core_text, f"Missing core marker: {marker}"
-
-          for marker in [
-              "Apple Fundamental Analysis",
-              "Costco Singapore Market Entry",
-              "WEBTOON Strategic Management Capstone",
-              "System (formerly MasterBase)",
-              "CommuteWise",
-          ]:
-              assert marker in extended_text, f"Missing extended marker: {marker}"
-
-          print("Core pages:", len(core.pages))
-          print("Extended pages:", len(extended.pages))
-          print("Resume validation passed")
+          assert len(extended.pages) == 5, f"Extended profile must remain five pages; got {len(extended.pages)}"
+          print("All curated resume validations passed")
           PY
       - name: Commit generated PDFs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add Atharva_Barad_Resume.pdf Atharva_Barad_Extended_Profile.pdf
+          git add             Atharva_Barad_Finance_Resume.pdf             Atharva_Barad_Analytics_Resume.pdf             Atharva_Barad_Product_Systems_Resume.pdf             Atharva_Barad_Operations_Resume.pdf             Atharva_Barad_Consulting_Strategy_Resume.pdf             Atharva_Barad_Resume.pdf
           if git diff --cached --quiet; then
-            echo "Resume PDFs unchanged"
+            echo "Curated resume PDFs unchanged"
           else
-            git commit -m "Rebuild public resumes from Career Hub rules"
+            git commit -m "Rebuild curated public resumes"
             git push
           fi
