@@ -32,24 +32,108 @@
 </svg>
 <figcaption><span class="caption-title">Country-screening result.</span> Singapore ranked first in the weighted model, but its lower vehicle ownership and higher property/labor costs challenged assumptions built into Costco’s traditional bulk-warehouse format.<span class="source-note">Scores and weighting from the final course project.</span></figcaption>
 </figure>
-<div class="interactive-lab" data-country-weight-explorer>
-<div class="lab-kicker">Interactive · country-screening model</div>
-<h3>Reweight the decision framework</h3>
-<p class="lab-copy">Change the top-level emphasis on Benefits, Costs, and Risks. The underlying country category scores come from the final screening tool; metric weights inside each category stay proportional to the original model.</p>
-<div class="weight-grid">
-<div class="weight-card"><label for="w-benefits">Benefits <output data-out-benefits>50%</output></label><input id="w-benefits" data-weight-benefits type="range" min="0" max="100" step="5" value="50"></div>
-<div class="weight-card"><label for="w-costs">Costs <output data-out-costs>30%</output></label><input id="w-costs" data-weight-costs type="range" min="0" max="100" step="5" value="30"></div>
-<div class="weight-card"><label for="w-risks">Risks <output data-out-risks>20%</output></label><input id="w-risks" data-weight-risks type="range" min="0" max="100" step="5" value="20"></div>
+<div class="interactive-lab criterion-lab" data-country-weight-explorer>
+<div class="lab-kicker">Interactive · submitted country-screening model</div>
+<div class="criterion-lab-head">
+<div><h3>Change the actual criterion weights</h3><p class="lab-copy">The original tool used twelve criteria—not just three category totals. Move any criterion to see how its final 1–10 country ratings change the ranking. The initial settings reproduce the submitted 7.50 / 6.25 / 5.35 scores.</p></div>
+<div class="criterion-total-card"><span>Current input total</span><strong data-weight-total>100%</strong><small>Scoring is normalized to 100%</small></div>
 </div>
-<div class="lab-controls"><button type="button" class="lab-chip" data-weight-reset>Reset to 50 / 30 / 20</button><span class="lab-copy">Current total: <strong data-weight-total>100%</strong></span></div>
-<div class="rank-results" data-weight-results></div>
+
+<div class="criteria-groups">
+<section class="criteria-group benefits">
+<header><div><span>Benefits</span><strong>Demand &amp; access</strong></div><b data-group-total="Benefits">50.0%</b></header>
+
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Current income per person</span><output data-criterion-output="income">20%</output></div>
+<input type="range" min="0" max="40" step="1" value="20" data-criterion-weight="income" aria-label="Current income per person weight">
+<div class="criterion-ratings"><span>SG <b>9</b></span><span>KR <b>5</b></span><span>JP <b>4</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Likely economic growth rate</span><output data-criterion-output="growth">20%</output></div>
+<input type="range" min="0" max="40" step="1" value="20" data-criterion-weight="growth" aria-label="Likely economic growth rate weight">
+<div class="criterion-ratings"><span>SG <b>8</b></span><span>KR <b>5</b></span><span>JP <b>1</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Demographic trend / vehicle ownership</span><output data-criterion-output="vehicles">10%</output></div>
+<input type="range" min="0" max="40" step="1" value="10" data-criterion-weight="vehicles" aria-label="Demographic trend / vehicle ownership weight">
+<div class="criterion-ratings"><span>SG <b>3</b></span><span>KR <b>6</b></span><span>JP <b>7</b></span></div>
+</label>
+</section>
+<section class="criteria-group costs">
+<header><div><span>Costs</span><strong>Operating friction</strong></div><b data-group-total="Costs">30.0%</b></header>
+
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Corruption / transparency</span><output data-criterion-output="corruption">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="corruption" aria-label="Corruption / transparency weight">
+<div class="criterion-ratings"><span>SG <b>9</b></span><span>KR <b>6</b></span><span>JP <b>7</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Infrastructure quality</span><output data-criterion-output="infrastructure">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="infrastructure" aria-label="Infrastructure quality weight">
+<div class="criterion-ratings"><span>SG <b>9</b></span><span>KR <b>8</b></span><span>JP <b>8</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Legal / business environment costs</span><output data-criterion-output="legal">10%</output></div>
+<input type="range" min="0" max="40" step="1" value="10" data-criterion-weight="legal" aria-label="Legal / business environment costs weight">
+<div class="criterion-ratings"><span>SG <b>9</b></span><span>KR <b>9</b></span><span>JP <b>8</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Labor availability</span><output data-criterion-output="labor">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="labor" aria-label="Labor availability weight">
+<div class="criterion-ratings"><span>SG <b>6</b></span><span>KR <b>6</b></span><span>JP <b>5</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Property costs</span><output data-criterion-output="property">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="property" aria-label="Property costs weight">
+<div class="criterion-ratings"><span>SG <b>4</b></span><span>KR <b>9</b></span><span>JP <b>8</b></span></div>
+</label>
+</section>
+<section class="criteria-group risks">
+<header><div><span>Risks</span><strong>Stability &amp; durability</strong></div><b data-group-total="Risks">20.0%</b></header>
+
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Social / political unrest</span><output data-criterion-output="unrest">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="unrest" aria-label="Social / political unrest weight">
+<div class="criterion-ratings"><span>SG <b>7</b></span><span>KR <b>6</b></span><span>JP <b>8</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Economic mismanagement / inflation</span><output data-criterion-output="inflation">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="inflation" aria-label="Economic mismanagement / inflation weight">
+<div class="criterion-ratings"><span>SG <b>8</b></span><span>KR <b>7</b></span><span>JP <b>9</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Property-rights protection</span><output data-criterion-output="rights">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="rights" aria-label="Property-rights protection weight">
+<div class="criterion-ratings"><span>SG <b>9</b></span><span>KR <b>8</b></span><span>JP <b>9</b></span></div>
+</label>
+<label class="criterion-weight">
+<div class="criterion-weight-head"><span>Aging / declining population</span><output data-criterion-output="aging">5%</output></div>
+<input type="range" min="0" max="40" step="1" value="5" data-criterion-weight="aging" aria-label="Aging / declining population weight">
+<div class="criterion-ratings"><span>SG <b>6</b></span><span>KR <b>5</b></span><span>JP <b>3</b></span></div>
+</label>
+</section>
+</div>
+
+<div class="criterion-actions">
+<button type="button" class="lab-chip" data-weight-reset>Reset to submitted weights</button>
+<span>Ratings shown are the final 1–10 ratings used in the submitted screening tool.</span>
+</div>
+
+<div class="country-score-results" data-weight-results></div>
 <div class="lab-status" data-weight-status aria-live="polite"></div>
-<p class="lab-note">This is a transparent reweighting exercise, not a new empirical estimate. It is meant to show why the ranking depends on governance choices as well as country data.</p>
+<p class="lab-note">Original weights: income 20%, growth 20%, vehicle ownership 10%; corruption 5%, infrastructure 5%, legal costs 10%, labor 5%, property 5%; social/political unrest 5%, inflation 5%, property rights 5%, and aging population 5%. When edited values no longer sum to 100%, the explorer normalizes them proportionally before scoring.</p>
 </div>
 <h2>Why the highest score still created an operating problem</h2><p>Singapore’s purchasing power, growth, infrastructure, and business environment were attractive. But low vehicle ownership and higher property/labor costs cut directly against assumptions embedded in Costco’s traditional bulk-warehouse model. A score could tell us which country deserved deeper work; it could not tell us how the business should be localized.</p>
 <div class="mini-grid"><div class="mini-card"><strong>Accessibility</strong><span>Bulk purchasing is easier when customers can move large orders. Lower vehicle ownership changes the convenience equation.</span></div><div class="mini-card"><strong>Real estate</strong><span>Higher property costs put pressure on the large-format warehouse footprint.</span></div><div class="mini-card"><strong>Membership economics</strong><span>Pricing had to support Costco’s value proposition while fitting local willingness to pay.</span></div><div class="mini-card"><strong>Localization</strong><span>Product mix, logistics, and operating design needed to respond to local shopping behavior rather than copy the U.S. format mechanically.</span></div></div>
 <h2>From screening to recommendation</h2><p>I also conducted pricing and financial research and contributed to membership-pricing, demand/revenue, and startup-capital analysis, plus substantial cross-module QA and final formatting. The project became a useful precursor to my later Monte Carlo work because it exposed the same conceptual boundary: a strategic factor can be important without automatically becoming a financial coefficient.</p>
 <div class="artifact-bar"><a class="artifact-link" href="../articles/scores-vs-decisions.html">Why a score is not a strategy <span class="meta">article</span></a></div>
+<div class="project-bridge">
+<div class="project-bridge-kicker">Next in the modeling sequence</div>
+<div class="project-bridge-grid">
+<div><h3>From weighted screening to stochastic simulation.</h3><p>This project exposed the boundary between strategic importance and financial sensitivity. The later Monte Carlo research kept that boundary explicit, then added empirical uncertainty, dependence, financing capacity, rollout rules, and valuation over a 15-year horizon.</p></div>
+<a class="project-bridge-link" href="./monte-carlo.html"><span>Continue to</span><strong>Modeling International Expansion Under Uncertainty</strong><b aria-hidden="true">→</b></a>
+</div>
+</div>
 </div><aside class="sidebar"><h4>Decision model</h4><div class="side-list"><div class="side-item"><strong>50%</strong><span>Benefits</span></div><div class="side-item"><strong>30%</strong><span>Costs</span></div><div class="side-item"><strong>20%</strong><span>Risks</span></div></div></aside></div></div></section></main>
 
 <footer class="footer"><div class="shell footer-grid">
