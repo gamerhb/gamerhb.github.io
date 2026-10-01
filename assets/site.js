@@ -292,74 +292,112 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
 })();
 
 
-/* About portfolio explorer */
+/* Global portfolio search */
 (function(){
-  const root=document.querySelector('[data-work-explorer]');
-  if(!root) return;
+  const searchItems=[{"type":"page","title":"About","href":"/about.html","description":"Background, working loop, education, credentials, and capabilities.","tags":["about","education","credentials","capabilities","working loop"]},{"type":"page","title":"Experience","href":"/experience.html","description":"Professional operations, consulting, event work, and experience case studies.","tags":["experience","operations","consulting","leadership"]},{"type":"page","title":"Projects","href":"/projects.html","description":"Selected work across systems, finance, analytics, strategy, and product.","tags":["projects","portfolio","case studies"]},{"type":"page","title":"Articles","href":"/articles.html","description":"Writing on systems, modeling, finance, strategy, operations, and decision-making.","tags":["articles","writing","essays"]},{"type":"page","title":"Resume Library","href":"/resume.html","description":"One-page resumes for finance, analytics, product systems, operations, and consulting.","tags":["resume","finance resume","analytics resume","product resume","operations resume","consulting resume"]},{"type":"experience","title":"United Indians — Operations, Grants & Process Redesign","href":"/experience/united-indians.html","description":"Workflow redesign, Excel automation, grant budgeting, compliance reporting, internship leadership, and communication systems.","tags":["process redesign","program operations","excel modeling","power query","vba","grant","compliance","internship","stakeholder communication","workflow"]},{"type":"experience","title":"Business Consulting Association","href":"/experience/bca.html","description":"Client research, pricing, market analysis, case leadership, strategic recommendations, and deliverable QA.","tags":["consulting","strategy","stakeholder research","market research","pricing","leadership","client research","decision support"]},{"type":"experience","title":"N&M Events — Live Event Operations","href":"/experience/nm-events.html","description":"Setup, logistics, inventory, layouts, transportation, and real-time coordination under changing requirements.","tags":["operations","event operations","logistics","coordination","contingency","program operations"]},{"type":"project","title":"Modeling International Expansion Under Uncertainty","href":"/projects/monte-carlo.html","description":"15-year Monte Carlo expansion framework across 120,000 simulated paths, 23 stochastic variables, financing, rollout strategy, and valuation.","tags":["monte carlo","python","model validation","npv","irr","wacc","finance","simulation","dependence modeling","international expansion","decision science"]},{"type":"project","title":"System — A Local-First Personal Analytics Platform","href":"/projects/system.html","description":"Kotlin Multiplatform product spanning requirements, local-first data, sync/history semantics, analytics, testing, and AI-assisted development.","tags":["product requirements","kotlin multiplatform","sql","postgresql","sqldelight","supabase","regression testing","ai-assisted workflows","local-first","product","relational modeling"]},{"type":"project","title":"Capital Budgeting for a Five-Warehouse Expansion","href":"/projects/costco-capital-budgeting.html","description":"Incremental cash-flow modeling, sensitivity, WACC, NPV/IRR, downside analysis, and financing decisions.","tags":["capital budgeting","excel modeling","npv","irr","wacc","finance","sensitivity","model validation","costco"]},{"type":"project","title":"Valuing Apple When the Methods Disagree","href":"/projects/apple-valuation.html","description":"FCFF DCF, dividend discount, peer P/E, WACC, reconciliation, and interpretation of conflicting valuation methods.","tags":["apple","valuation","dcf","fcff","ddm","p/e","wacc","finance","excel modeling","model validation"]},{"type":"project","title":"Screening Singapore for Costco Market Entry","href":"/projects/costco-singapore.html","description":"Country screening, pricing and financial research, localization, operating constraints, and decision-framework QA.","tags":["costco singapore","international strategy","country screening","strategy","excel modeling","model validation","market entry"]},{"type":"project","title":"UniPath — AI-Assisted Student Lifecycle Platform","href":"/projects/unipath.html","description":"34-table PostgreSQL schema, Python proof of concept, ranking, semantic matching, admissions estimates, and academic-risk workflows.","tags":["unipath","python","sql","postgresql","relational modeling","product requirements","ai","database","semantic matching"]},{"type":"project","title":"WEBTOON — Strategy as an Activity System","href":"/projects/webtoon.html","description":"Organizational structure, Five Forces, competitive dynamics, value-chain analysis, and strategic synthesis.","tags":["webtoon","strategy","five forces","value chain","competitive analysis","research"]},{"type":"project","title":"Visionaire — Product Economics for Smart Glasses","href":"/projects/visionaire.html","description":"Pricing, startup costs, revenue and expense projections, break-even, and early-stage product economics.","tags":["visionaire","product economics","pricing","break-even","excel modeling","smart glasses"]},{"type":"article","title":"Automating orchestration without automating judgment","href":"/articles/ai-orchestration.html","description":"Durable worker state, task contracts, handoffs, validation, and human review in AI-assisted development.","tags":["ai-assisted workflows","product requirements","regression testing","system","orchestration"]},{"type":"article","title":"Historical truth is a product requirement","href":"/articles/historical-truth-is-a-product-requirement.html","description":"Why identity, sync, history, and analytics semantics have to agree before a product can be trusted.","tags":["product requirements","regression testing","sql","postgresql","relational modeling","system","local-first"]},{"type":"article","title":"Digitizing a workflow is not the same as improving it","href":"/articles/workflow-redesign.html","description":"Validation, correction paths, information reuse, and the difference between digitizing and redesigning an operating process.","tags":["process redesign","program operations","excel modeling","united indians","workflow","power query"]},{"type":"article","title":"Making the work visible is part of doing the work","href":"/articles/make-the-work-visible.html","description":"Communication as a trust, alignment, and correction mechanism in collaborative work.","tags":["program operations","stakeholder communication","leadership","united indians"]},{"type":"article","title":"A model can run and still be wrong","href":"/articles/model-can-run-and-still-be-wrong.html","description":"Separating data, calibration, economic logic, implementation, and documentation failures.","tags":["model validation","python","monte carlo","debugging","governance"]},{"type":"article","title":"Why dependence modeling became the hardest part","href":"/articles/dependence-modeling.html","description":"Empirical marginals, rank dependence, PSD repair, temporal persistence, and joint-system validation.","tags":["monte carlo","python","model validation","dependence modeling","correlation"]},{"type":"article","title":"When financing constraints change the strategy itself","href":"/articles/financing-changes-strategy.html","description":"Why financing capacity can change the realized expansion path, not just the discount rate.","tags":["monte carlo","finance","npv","irr","wacc","strategy","financing"]},{"type":"article","title":"A positive NPV is not the end of the decision","href":"/articles/capital-budgeting-under-downside.html","description":"Sensitivity, downside analysis, operating controls, and capital-allocation decisions.","tags":["capital budgeting","npv","irr","wacc","excel modeling","model validation","finance"]},{"type":"article","title":"When valuation methods disagree, don’t average them","href":"/articles/valuation-disagreement.html","description":"Why FCFF, DDM, peer P/E, and market price can tell different economic stories.","tags":["valuation","dcf","fcff","ddm","p/e","finance","apple"]},{"type":"article","title":"A weighted score is not a strategy","href":"/articles/scores-vs-decisions.html","description":"Why ranking frameworks help only when their tradeoffs, assumptions, and governance remain visible.","tags":["strategy","country screening","model validation","costco singapore","decision framework"]},{"type":"article","title":"AI confidence is not user trust","href":"/articles/ai-confidence-is-not-user-trust.html","description":"Explainability, hard constraints, fallback behavior, and honest boundaries around probabilistic outputs.","tags":["product requirements","python","ai-assisted workflows","unipath","ai","trust"]},{"type":"article","title":"Strategy frameworks are better when they connect","href":"/articles/activity-systems-beat-framework-checklists.html","description":"Turning separate strategy analyses into a coherent activity system.","tags":["strategy","webtoon","consulting","stakeholder research","synthesis"]},{"type":"article","title":"Robust decisions beat perfect forecasts","href":"/articles/robust-decisions-under-incomplete-information.html","description":"Ranges, downside, reversibility, and decisions that remain acceptable under incomplete information.","tags":["model validation","process redesign","product requirements","decision-making","uncertainty","operations"]}];
+  const nav=document.querySelector('.nav-links');
+  const header=document.querySelector('.site-header');
+  if(!nav||!header||document.querySelector('[data-global-search-trigger]')) return;
 
-  const input=root.querySelector('[data-work-search]');
-  const typeButtons=[...root.querySelectorAll('[data-work-type]')];
-  const items=[...root.querySelectorAll('[data-work-item]')];
-  const status=root.querySelector('[data-work-status]');
-  const clear=root.querySelector('[data-work-clear]');
-  const empty=root.querySelector('[data-work-empty]');
-  const capabilityButtons=[...document.querySelectorAll('[data-capability-trigger]')];
+  const resumeLink=nav.querySelector('.nav-cta');
+  const trigger=document.createElement('button');
+  trigger.type='button';
+  trigger.className='global-search-trigger';
+  trigger.setAttribute('data-global-search-trigger','');
+  trigger.setAttribute('aria-expanded','false');
+  trigger.setAttribute('aria-controls','global-search-dropdown');
+  trigger.innerHTML='<span class="global-search-icon" aria-hidden="true"></span><span class="global-search-label">Search</span>';
+  nav.insertBefore(trigger,resumeLink||null);
 
-  let activeType='all';
-  let activeCapability='';
+  const dropdown=document.createElement('div');
+  dropdown.className='global-search-dropdown';
+  dropdown.id='global-search-dropdown';
+  dropdown.hidden=true;
+  dropdown.innerHTML='<div class="shell global-search-shell"><div class="global-search-panel" role="search">'+
+    '<div class="global-search-input-row"><span class="global-search-large-icon" aria-hidden="true"></span><input type="search" autocomplete="off" spellcheck="false" aria-label="Search portfolio" placeholder="Search projects, experience, articles, skills…"><button type="button" class="global-search-close" aria-label="Close search">Close</button></div>'+
+    '<div class="global-search-controls"><div class="global-search-types" aria-label="Filter search results"><button type="button" class="active" data-global-search-type="all">All</button><button type="button" data-global-search-type="experience">Experience</button><button type="button" data-global-search-type="project">Projects</button><button type="button" data-global-search-type="article">Articles</button><button type="button" data-global-search-type="page">Pages</button></div><span class="global-search-status" aria-live="polite"></span></div>'+
+    '<div class="global-search-results"></div><div class="global-search-empty" hidden>No matches. Try a broader term.</div>'+
+    '<div class="global-search-hint"><span><kbd>/</kbd> search</span><span><kbd>Esc</kbd> close</span></div>'+
+    '</div></div>';
+  header.appendChild(dropdown);
 
-  const normal=s=>(s||'').toLowerCase().trim();
+  const input=dropdown.querySelector('input');
+  const close=dropdown.querySelector('.global-search-close');
+  const results=dropdown.querySelector('.global-search-results');
+  const empty=dropdown.querySelector('.global-search-empty');
+  const status=dropdown.querySelector('.global-search-status');
+  const typeButtons=[...dropdown.querySelectorAll('[data-global-search-type]')];
+  let type='all';
 
-  function render(){
-    const q=normal(input.value);
-    let visible=0;
-    items.forEach(item=>{
-      const type=item.dataset.type;
-      const tags=normal(item.dataset.tags).split('|').map(x=>x.trim()).filter(Boolean);
-      const haystack=normal(item.textContent+' '+item.dataset.tags);
-      const matchType=activeType==='all'||type===activeType;
-      const matchCapability=!activeCapability||tags.includes(activeCapability);
-      const matchSearch=!q||haystack.includes(q);
-      const show=matchType&&matchCapability&&matchSearch;
-      item.dataset.hidden=show?'false':'true';
-      if(show) visible++;
+  const norm=s=>(s||'').toLowerCase().replace(/[–—]/g,'-').trim();
+  const label=t=>({experience:'Experience',project:'Project',article:'Article',page:'Page'}[t]||t);
+
+  function score(item,q){
+    if(!q) return item.type==='page'?2:1;
+    const terms=q.split(/\s+/).filter(Boolean);
+    const title=norm(item.title), desc=norm(item.description), tags=(item.tags||[]).map(norm);
+    const haystack=title+' '+desc+' '+tags.join(' ');
+    if(!terms.every(term=>haystack.includes(term))) return -1;
+    let s=0;
+    if(title.includes(q)) s+=20;
+    if(tags.some(tag=>tag===q)) s+=16;
+    terms.forEach(term=>{
+      if(title.includes(term)) s+=8;
+      if(tags.some(tag=>tag.includes(term))) s+=6;
+      if(desc.includes(term)) s+=2;
     });
-
-    typeButtons.forEach(b=>b.classList.toggle('active',b.dataset.workType===activeType));
-    capabilityButtons.forEach(b=>b.classList.toggle('active',normal(b.dataset.capabilityTrigger)===activeCapability));
-
-    const parts=[];
-    if(activeCapability) parts.push('capability: '+capabilityButtons.find(b=>normal(b.dataset.capabilityTrigger)===activeCapability)?.textContent.trim());
-    if(activeType!=='all') parts.push(activeType);
-    if(q) parts.push('search: “'+input.value.trim()+'”');
-    status.textContent=(parts.length?'Showing '+visible+' match'+(visible===1?'':'es')+' for '+parts.join(' · '):'Showing all '+visible+' indexed items');
-    clear.hidden=!(activeCapability||activeType!=='all'||q);
-    empty.hidden=visible!==0;
+    return s;
   }
 
-  typeButtons.forEach(btn=>btn.addEventListener('click',()=>{
-    activeType=btn.dataset.workType;
-    render();
-  }));
+  function render(){
+    const q=norm(input.value);
+    const matches=searchItems.filter(item=>type==='all'||item.type===type)
+      .map(item=>({item,score:score(item,q)})).filter(x=>x.score>=0)
+      .sort((a,b)=>b.score-a.score||a.item.title.localeCompare(b.item.title))
+      .slice(0,q?10:8);
 
+    results.innerHTML=matches.map(({item})=>
+      '<a class="global-search-result" href="'+item.href+'"><span class="global-search-result-type">'+label(item.type)+'</span><span class="global-search-result-copy"><strong>'+item.title+'</strong><small>'+item.description+'</small></span><span class="global-search-result-arrow" aria-hidden="true">→</span></a>'
+    ).join('');
+    empty.hidden=matches.length!==0;
+    status.textContent=q?(matches.length+' result'+(matches.length===1?'':'s')):'Featured links';
+    typeButtons.forEach(btn=>btn.classList.toggle('active',btn.dataset.globalSearchType===type));
+  }
+
+  function openSearch(query){
+    dropdown.hidden=false;
+    trigger.setAttribute('aria-expanded','true');
+    if(typeof query==='string'){input.value=query;type='all';}
+    render();
+    requestAnimationFrame(()=>input.focus());
+  }
+  function closeSearch(){
+    dropdown.hidden=true;
+    trigger.setAttribute('aria-expanded','false');
+  }
+
+  trigger.addEventListener('click',()=>dropdown.hidden?openSearch(''):closeSearch());
+  close.addEventListener('click',closeSearch);
   input.addEventListener('input',render);
+  typeButtons.forEach(btn=>btn.addEventListener('click',()=>{type=btn.dataset.globalSearchType;render();input.focus();}));
 
-  clear.addEventListener('click',()=>{
-    activeType='all';
-    activeCapability='';
-    input.value='';
-    render();
-    input.focus();
+  document.addEventListener('click',event=>{
+    const capability=event.target.closest('[data-global-search-query]');
+    if(capability){
+      event.preventDefault();
+      openSearch(capability.dataset.globalSearchQuery||capability.textContent.trim());
+      return;
+    }
+    if(!dropdown.hidden&&!dropdown.contains(event.target)&&!trigger.contains(event.target)) closeSearch();
   });
 
-  capabilityButtons.forEach(btn=>btn.addEventListener('click',()=>{
-    const value=normal(btn.dataset.capabilityTrigger);
-    activeCapability=activeCapability===value?'':value;
-    activeType='all';
-    input.value='';
-    render();
-    root.scrollIntoView({behavior:'smooth',block:'start'});
-  }));
+  document.addEventListener('keydown',event=>{
+    const active=document.activeElement;
+    const typing=active&&(active.tagName==='INPUT'||active.tagName==='TEXTAREA'||active.isContentEditable);
+    if(event.key==='/'&&!typing){event.preventDefault();openSearch('');}
+    else if(event.key==='Escape'&&!dropdown.hidden){event.preventDefault();closeSearch();trigger.focus();}
+  });
 
+  window.portfolioSearch={open:openSearch,close:closeSearch};
   render();
 })();
