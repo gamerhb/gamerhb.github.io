@@ -94,6 +94,29 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
       svg.innerHTML=out;
     }
 
+    function renderValues(filtered){
+      const wrap=root.querySelector('[data-mc-values]');
+      if(!wrap) return;
+      if(filtered.length===1){
+        const d=filtered[0];
+        wrap.innerHTML=
+          '<div class="mc-value-cards">'+
+            '<div class="mc-value-card"><span>P10</span><strong>'+moneyM(d.p10)+'</strong></div>'+
+            '<div class="mc-value-card median"><span>Median</span><strong>'+moneyM(d.median)+'</strong></div>'+
+            '<div class="mc-value-card"><span>P90</span><strong>'+moneyM(d.p90)+'</strong></div>'+
+          '</div>';
+        return;
+      }
+
+      wrap.innerHTML=
+        '<div class="mc-values-table-wrap"><table class="mc-values-table">'+
+          '<thead><tr><th>Configuration</th><th>P10</th><th>Median</th><th>P90</th></tr></thead>'+
+          '<tbody>'+filtered.map(d=>
+            '<tr><td>'+esc(d.income)+' · '+esc(d.strategy)+'</td><td>'+moneyM(d.p10)+'</td><td><strong>'+moneyM(d.median)+'</strong></td><td>'+moneyM(d.p90)+'</td></tr>'
+          ).join('')+'</tbody>'+
+        '</table></div>';
+    }
+
     function renderAnalysis(filtered){
       if(income!=='All' && strategy!=='All'){
         const d=filtered[0];
@@ -123,6 +146,7 @@ document.querySelectorAll('[data-filter]').forEach(btn=>{
     function render(){
       const filtered=rows.filter(d=>(income==='All'||d.income===income)&&(strategy==='All'||d.strategy===strategy));
       renderChart(filtered);
+      renderValues(filtered);
       renderAnalysis(filtered);
       incomeButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcIncomeFilter===income));
       strategyButtons.forEach(b=>b.classList.toggle('active',b.dataset.mcStrategyFilter===strategy));
