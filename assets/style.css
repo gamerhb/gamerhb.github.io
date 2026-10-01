@@ -245,3 +245,32 @@ img{max-width:100%}
   .rank-row .lab-bar-track{grid-column:2/4}
   .demo-record{grid-template-columns:1fr}
 }
+
+
+/* Figure 6 interactive recreation */
+.mc-filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 14px}
+.mc-filter-buttons{align-items:center}
+.mc-figure6-wrap{overflow-x:auto;margin:16px 0 4px;padding:10px 6px 0;border:1px solid var(--line);border-radius:14px;background:#fff}
+.mc-figure6-wrap svg{display:block;width:100%;min-width:760px;height:auto}
+.mc-grid{stroke:#e4e0d8;stroke-width:1}
+.mc-axis{stroke:#8f918d;stroke-width:1.1}
+.mc-zero{stroke:#8bb9c8;stroke-width:1.3}
+.mc-whisker,.mc-cap{stroke:#4f94b8;stroke-width:1.7}
+.mc-median-dot{fill:#176f98;stroke:#fff;stroke-width:1.2}
+.mc-y-label,.mc-x-label,.mc-axis-title,.mc-legend text{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#4f514e}
+.mc-y-label{font-size:12px}
+.mc-x-label{font-size:11px}
+.mc-axis-title{font-size:12px;font-weight:700}
+.mc-legend text{font-size:11px}
+.mc-analysis{margin-top:16px;padding:18px 20px;border:1px solid var(--line);border-radius:14px;background:var(--soft2)}
+.mc-analysis-kicker{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);font-weight:820}
+.mc-analysis h4{margin:4px 0 8px;font-size:1.08rem}
+.mc-analysis p{margin:0;color:#373936}
+.mc-analysis p+p{margin-top:8px}
+.mc-analysis-hint{font-size:.86rem;color:var(--muted)!important}
+.mc-analysis-stats{display:flex;gap:8px 14px;flex-wrap:wrap;margin-top:13px;padding-top:12px;border-top:1px solid rgba(23,59,53,.18);font-size:.8rem;color:var(--muted)}
+.mc-analysis-stats span{white-space:nowrap}
+.mc-analysis-stats strong{color:var(--ink)}
+@media(max-width:760px){
+  .mc-filter-grid{grid-template-columns:1fr}
+}
